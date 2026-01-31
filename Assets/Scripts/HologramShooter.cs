@@ -21,10 +21,15 @@ public class HologramShooter : MonoBehaviour
     public float cooldown = 0.25f;
     public float maxRayDist = 50f;
 
+    [Header("Polarity (Right Thumbstick)")]
+    public float stickDeadZone = 0.5f;
+
     float lastShotTime;
     bool triggerWasDown;
+    bool stickWasRight;
 
     InputAction runtimeTrigger;
+    InputAction runtimeThumbstick;
 
     // Visuals
     LineRenderer laserLine;
@@ -69,6 +74,10 @@ public class HologramShooter : MonoBehaviour
         runtimeTrigger.AddBinding("<OculusTouchController>{RightHand}/trigger");
         runtimeTrigger.AddBinding("<MetaQuestTouchProController>{RightHand}/trigger");
         runtimeTrigger.Enable();
+
+        runtimeThumbstick = new InputAction("RightThumbstick", InputActionType.Value);
+        runtimeThumbstick.AddBinding("<XRController>{RightHand}/thumbstick");
+        runtimeThumbstick.Enable();
     }
 
     void OnDisable()
@@ -78,6 +87,12 @@ public class HologramShooter : MonoBehaviour
             runtimeTrigger.Disable();
             runtimeTrigger.Dispose();
             runtimeTrigger = null;
+        }
+        if (runtimeThumbstick != null)
+        {
+            runtimeThumbstick.Disable();
+            runtimeThumbstick.Dispose();
+            runtimeThumbstick = null;
         }
     }
 
@@ -135,6 +150,27 @@ public class HologramShooter : MonoBehaviour
         {
             TryShootMouse();
         }
+
+        // Right thumbstick flick right → cycle polarity
+        if (runtimeThumbstick != null)
+        {
+            float stickX = runtimeThumbstick.ReadValue<Vector2>().x;
+            if (stickX > stickDeadZone && !stickWasRight)
+            {
+                stickWasRight = true;
+                CyclePolarity();
+            }
+            else if (stickX < stickDeadZone * 0.5f)
+            {
+                stickWasRight = false;
+            }
+        }
+
+        // Desktop fallback: E key to cycle polarity
+        if (Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
+        {
+            CyclePolarity();
+        }
     }
 
     float ReadRightTriggerXR()
@@ -147,6 +183,20 @@ public class HologramShooter : MonoBehaviour
                 return val;
         }
         return 0f;
+    }
+
+    void CyclePolarity()
+    {
+        if (GameManager.Instance == null) return;
+        Polarity newPolarity = GameManager.Instance.CurrentPolarity switch
+        {
+            Polarity.Neutral => Polarity.Happy,
+            Polarity.Happy   => Polarity.Angry,
+            Polarity.Angry   => Polarity.Neutral,
+            _                => Polarity.Neutral
+        };
+        GameManager.Instance.SetPolarity(newPolarity);
+        Debug.Log($"[HologramShooter] Polarity → {newPolarity}");
     }
 
     void TryShootVR()
