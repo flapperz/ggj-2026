@@ -51,10 +51,6 @@ public class Player : MonoBehaviour
         ProcessMovement();
 
         // Check if Y position drops below DeathBarrier
-        if (transform.position.y < DeathBarrier)
-        {
-            Respawn();
-        }
     }
 
     void UpdateMaterial()
@@ -97,36 +93,28 @@ public class Player : MonoBehaviour
         moveInput = value.Get<Vector2>();
     }
 
-    public void OnJump(InputValue value)
+    // public void OnJump(InputValue value)
+    // {
+    //     if (!value.isPressed) return;
+
+    //     if (jumpsRemaining > 0)
+    //     {
+    //         float jumpMultiplier =
+    //             (jumpsRemaining == maxJumps) ? 1f : airJumpMultiplier;
+
+    //         playerVelocity.y = Mathf.Sqrt(
+    //             jumpHeight * jumpMultiplier * -2f * (gravityValue * gravityMultiplier)
+    //         );
+
+    //         jumpsRemaining--;
+    //     }
+    // }
+
+    public void TriggerMaskChange(Polarity targetPolarity)
     {
-        if (!value.isPressed) return;
-
-        if (jumpsRemaining > 0)
-        {
-            float jumpMultiplier =
-                (jumpsRemaining == maxJumps) ? 1f : airJumpMultiplier;
-
-            playerVelocity.y = Mathf.Sqrt(
-                jumpHeight * jumpMultiplier * -2f * (gravityValue * gravityMultiplier)
-            );
-
-            jumpsRemaining--;
-        }
-    }
-
-    public void OnInteract(InputValue value)
-    {
-        if (!value.isPressed) return;
-
-        Polarity newPolarity = GameManager.Instance.CurrentPolarity switch
-        {
-            Polarity.Neutral => Polarity.Happy,
-            Polarity.Happy => Polarity.Angry,
-            Polarity.Angry => Polarity.Neutral,
-            _ => Polarity.Neutral
-        };
-
-        GameManager.Instance.SetPolarity(newPolarity);
+        // Simply set the polarity based on the input provided by the controller
+        GameManager.Instance.SetPolarity(targetPolarity);
+        Debug.Log($"[MaskChange] Switched to {targetPolarity}");
     }
 
     public void OnHit()
@@ -149,48 +137,4 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void Respawn()
-    {
-        // 1. Find all objects with the tag "ResPoint"
-        GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("ResPoint");
-
-        Vector3 targetPosition = Vector3.zero; // Default fallback if no points exist
-
-        if (spawnPoints.Length > 0)
-        {
-            GameObject nearestPoint = null;
-            float minDistance = Mathf.Infinity;
-
-            // 2. Iterate to find the closest one
-            foreach (GameObject point in spawnPoints)
-            {
-
-                float distance = Mathf.Abs(point.transform.position.x - transform.position.x);
-                if (point.transform.position.x > transform.position.x)
-                {
-                    continue; // Ignore points behind the player
-                }
-                if (distance < minDistance)
-                {
-                    minDistance = distance;
-                    nearestPoint = point;
-                }
-            }
-            targetPosition = nearestPoint.transform.position;
-        }
-        else
-        {
-            Debug.LogWarning("No objects tagged 'ResPoint' found! Respawning at 0,0,0.");
-        }
-
-        // 3. Move player (Disable controller briefly to force teleport)
-        controller.enabled = false;
-        transform.position = targetPosition;
-        controller.enabled = true;
-
-        // 4. Reset velocity
-        playerVelocity = Vector3.zero;
-
-        Debug.Log($"Player Respawned at {targetPosition}!");
-    }
 }

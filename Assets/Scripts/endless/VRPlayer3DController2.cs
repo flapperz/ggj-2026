@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 /// Right Thumbstick Flick: Mask Change (Left=Happy, Right=Angry, Down=Neutral)
 /// Desktop Fallback: A/D (Move), Space (Jump), A/S/D (Masks)
 /// </summary>
-public class VRPlayer3DController : MonoBehaviour
+public class VRPlayer3DController2 : MonoBehaviour
 {
     public Player playerCharacter;
 
@@ -38,10 +38,6 @@ public class VRPlayer3DController : MonoBehaviour
 
     void OnEnable()
     {
-        // Left Hand Movement
-        moveAction = new InputAction("Move", InputActionType.Value, "<XRController>{LeftHand}/thumbstick");
-        moveAction.Enable();
-
         // Left Hand Jump (Primary Button is usually A on Quest Left, or X)
         jumpAction = new InputAction("Jump", InputActionType.Button, "<XRController>{LeftHand}/primaryButton");
         jumpAction.performed += _ => TryJump();
@@ -67,24 +63,8 @@ public class VRPlayer3DController : MonoBehaviour
     {
         if (playerCharacter == null) return;
 
-        HandleMovement();
         HandleFlickDetection();
         HandleKeyboardFallback();
-    }
-
-    private void HandleMovement()
-    {
-        Vector2 stickValue = moveAction.ReadValue<Vector2>();
-        float moveX = 0f;
-
-        if (stickValue.x < -deadZone) moveX = -1f;
-        else if (stickValue.x > deadZone) moveX = 1f;
-
-        // Apply movement if stick is active
-        if (moveX != 0)
-        {
-            playerCharacter.SetMoveInput(new Vector2(moveX, 0f));
-        }
     }
 
     private void HandleFlickDetection()
@@ -126,12 +106,6 @@ public class VRPlayer3DController : MonoBehaviour
     private void HandleKeyboardFallback()
     {
         if (Keyboard.current == null) return;
-
-        // Movement Fallback
-        float kbX = 0f;
-        if (Keyboard.current.aKey.isPressed) kbX = -1f;
-        if (Keyboard.current.dKey.isPressed) kbX = 1f;
-        if (kbX != 0) playerCharacter.SetMoveInput(new Vector2(kbX, 0f));
 
         // Jump Fallback
         if (Keyboard.current.spaceKey.wasPressedThisFrame)
