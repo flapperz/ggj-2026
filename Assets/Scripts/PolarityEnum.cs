@@ -2,6 +2,6 @@
 public enum Polarity
 {
     Neutral,
-    White,
-    Black
+    Happy,
+    Angry
 }
