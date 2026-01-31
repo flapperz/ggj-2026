@@ -121,4 +121,10 @@ public class Player : MonoBehaviour
 
         GameManager.Instance.SetPolarity(newPolarity);
     }
+
+    public void OnHit()
+    {
+        Debug.Log("Player was hit!");
+        // Add damage logic here later (e.g., health--, knockback)
+    }
 }
