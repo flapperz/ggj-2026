@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     public float jumpHeight = 3.0f;
     public float gravityValue = -9.81f;
     public float gravityMultiplier = 5.0f;
+    public float DeathBarrier = -50f;
 
     [Header("Jump Settings")]
     public int maxJumps = 2;                 // 2 = double jump
@@ -49,8 +50,8 @@ public class Player : MonoBehaviour
         ApplyGravity();
         ProcessMovement();
 
-        // Check if Y position drops below -50
-        if (transform.position.y < -50f)
+        // Check if Y position drops below DeathBarrier
+        if (transform.position.y < DeathBarrier)
         {
             Respawn();
         }
@@ -120,9 +121,9 @@ public class Player : MonoBehaviour
         Polarity newPolarity = GameManager.Instance.CurrentPolarity switch
         {
             Polarity.Neutral => Polarity.Happy,
-            Polarity.Happy   => Polarity.Angry,
-            Polarity.Angry   => Polarity.Neutral,
-            _                => Polarity.Neutral
+            Polarity.Happy => Polarity.Angry,
+            Polarity.Angry => Polarity.Neutral,
+            _ => Polarity.Neutral
         };
 
         GameManager.Instance.SetPolarity(newPolarity);
@@ -147,7 +148,7 @@ public class Player : MonoBehaviour
             jumpsRemaining--;
         }
     }
-    
+
     private void Respawn()
     {
         // 1. Find all objects with the tag "ResPoint"
@@ -163,8 +164,8 @@ public class Player : MonoBehaviour
             // 2. Iterate to find the closest one
             foreach (GameObject point in spawnPoints)
             {
-                
-                float distance = Mathf.Abs( point.transform.position.x - transform.position.x);
+
+                float distance = Mathf.Abs(point.transform.position.x - transform.position.x);
                 if (point.transform.position.x > transform.position.x)
                 {
                     continue; // Ignore points behind the player
@@ -183,13 +184,13 @@ public class Player : MonoBehaviour
         }
 
         // 3. Move player (Disable controller briefly to force teleport)
-        controller.enabled = false; 
+        controller.enabled = false;
         transform.position = targetPosition;
         controller.enabled = true;
 
         // 4. Reset velocity
-        playerVelocity = Vector3.zero; 
-        
+        playerVelocity = Vector3.zero;
+
         Debug.Log($"Player Respawned at {targetPosition}!");
     }
 }

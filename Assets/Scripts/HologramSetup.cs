@@ -167,6 +167,7 @@ public class HologramSetup : MonoBehaviour
             playerRef.moveSpeed *= levelScale;
             playerRef.jumpHeight *= levelScale;
             playerRef.gravityValue *= levelScale;
+            playerRef.DeathBarrier *= levelScale;
             Debug.Log($"[HologramSetup] Scaled Player physics (×{levelScale}): speed={playerRef.moveSpeed}, jump={playerRef.jumpHeight}, gravity={playerRef.gravityValue}");
         }
         else
