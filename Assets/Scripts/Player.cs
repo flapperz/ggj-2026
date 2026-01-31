@@ -1,47 +1,45 @@
 using UnityEngine;
-using UnityEngine.InputSystem; // Required for the New Input System
+using UnityEngine.InputSystem; // New Input System
 
 [RequireComponent(typeof(CharacterController))]
 public class Player : MonoBehaviour
 {
     [Header("Movement Settings")]
-    public float moveSpeed = 5.0f;
-    public float jumpHeight = 2.0f;
+    public float moveSpeed = 10.0f;
+    public float jumpHeight = 3.0f;
     public float gravityValue = -9.81f;
-    public float gravityMultiplier = 2.0f; // Makes falling feel snappier
+    public float gravityMultiplier = 5.0f;
 
-    [Header("Polarity Settings")]
+    [Header("Jump Settings")]
+    public int maxJumps = 2;                 // 2 = double jump
+    public float airJumpMultiplier = 0.85f;  // Second jump is slightly weaker
+
     private CharacterController controller;
     private Vector3 playerVelocity;
     private Vector2 moveInput;
     private bool isGrounded;
+    private int jumpsRemaining;
     private Renderer rend;
-    
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
         rend = GetComponent<Renderer>();
 
-        // 1. Subscribe to the event
-        GameManager.Instance.OnPolarityChanged += HandlePolarityChange;
+        jumpsRemaining = maxJumps;
 
-        // Optional: Initialize immediately with the current state
+        GameManager.Instance.OnPolarityChanged += HandlePolarityChange;
         HandlePolarityChange(GameManager.Instance.CurrentPolarity);
-        
-        UpdateMaterial();
     }
-    
+
     private void OnDestroy()
     {
-        // 2. IMPORTANT: Unsubscribe when this object is destroyed
         if (GameManager.Instance != null)
         {
             GameManager.Instance.OnPolarityChanged -= HandlePolarityChange;
         }
     }
 
-    // 3. The function that runs when the event fires
     private void HandlePolarityChange(Polarity newPolarity)
     {
         UpdateMaterial();
@@ -52,79 +50,76 @@ public class Player : MonoBehaviour
         ApplyGravity();
         ProcessMovement();
     }
-    
+
     void UpdateMaterial()
     {
-        // ACCESS THE GLOBAL STORE HERE
-        if (GameManager.Instance != null) 
+        if (GameManager.Instance != null)
         {
-            rend.material = GameManager.Instance.GetMaterial(GameManager.Instance.CurrentPolarity);
+            rend.material = GameManager.Instance.GetMaterial(
+                GameManager.Instance.CurrentPolarity
+            );
         }
     }
 
-
     private void ApplyGravity()
     {
-        // CharacterController.isGrounded is more reliable than custom raycasts for simple shapes
         isGrounded = controller.isGrounded;
 
-        // Stop applying gravity accumulation if we are on the ground
         if (isGrounded && playerVelocity.y < 0)
         {
-            playerVelocity.y = -2f; // Small negative value ensures we stay "stuck" to the ground
+            playerVelocity.y = -2f;     // Stick to ground
+            jumpsRemaining = maxJumps; // Reset jumps
         }
 
-        // Apply Gravity over time
         playerVelocity.y += gravityValue * gravityMultiplier * Time.deltaTime;
     }
 
     private void ProcessMovement()
     {
-        // 1. Calculate X-axis movement based on Input
-        // We zero out Z to keep it strictly 2.5D
+        // 2.5D movement: X axis only
         Vector3 move = new Vector3(moveInput.x, 0, 0);
-        
-        // Move the controller based on speed
         controller.Move(move * moveSpeed * Time.deltaTime);
 
-        // 2. Apply the vertical velocity (Gravity + Jump)
+        // Vertical movement (gravity + jump)
         controller.Move(playerVelocity * Time.deltaTime);
     }
 
-    // --- Input System Events (Send Messages) ---
+    // -------- Input System --------
 
-    // Linked to the "Move" Action (typically WASD or Left Stick)
     public void OnMove(InputValue value)
     {
         moveInput = value.Get<Vector2>();
     }
 
-
-    // Linked to the "Jump" Action (typically Space or South Button)
     public void OnJump(InputValue value)
     {
-        if (value.isPressed && isGrounded)
+        if (!value.isPressed) return;
+
+        if (jumpsRemaining > 0)
         {
-            // Physics formula for jump velocity: v = sqrt(h * -2 * g)
-            playerVelocity.y = Mathf.Sqrt(jumpHeight * -2f * (gravityValue * gravityMultiplier));
+            float jumpMultiplier =
+                (jumpsRemaining == maxJumps) ? 1f : airJumpMultiplier;
+
+            playerVelocity.y = Mathf.Sqrt(
+                jumpHeight * jumpMultiplier * -2f * (gravityValue * gravityMultiplier)
+            );
+
+            jumpsRemaining--;
         }
     }
 
     public void OnInteract(InputValue value)
     {
-        if (value.isPressed)
-        {
-            // Cycle through polarities on interact
-            Polarity newPolarity = GameManager.Instance.CurrentPolarity switch
-            {
-                Polarity.Neutral => Polarity.Happy,
-                Polarity.Happy => Polarity.Angry,
-                Polarity.Angry => Polarity.Neutral,
-                _ => Polarity.Neutral
-            };
+        if (!value.isPressed) return;
 
-            // Update the GameManager's polarity which will trigger the event
-            GameManager.Instance.SetPolarity(newPolarity);
-        }
+        Polarity newPolarity = GameManager.Instance.CurrentPolarity switch
+        {
+            Polarity.Neutral => Polarity.Happy,
+            Polarity.Happy   => Polarity.Angry,
+            Polarity.Angry   => Polarity.Neutral,
+            _                => Polarity.Neutral
+        };
+
+        GameManager.Instance.SetPolarity(newPolarity);
     }
 }
