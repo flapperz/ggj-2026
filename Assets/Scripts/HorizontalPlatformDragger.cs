@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR;
-
 /// <summary>
 /// Attach to any platform group object to make it horizontally draggable (left/right)
 /// using the right VR controller grip button.
@@ -50,6 +49,7 @@ public class HorizontalPlatformDragger : MonoBehaviour
     Collider[] childColliders;
     Renderer[] renderers;
     Color[] originalColors;
+
 
     void Awake()
     {
@@ -228,7 +228,7 @@ public class HorizontalPlatformDragger : MonoBehaviour
         return desiredX;
     }
 
-    // ── Player riding ──
+    // ── Player riding (delta-movement for full friction) ──
 
     void MoveWithRiders(float deltaX)
     {
@@ -236,21 +236,64 @@ public class HorizontalPlatformDragger : MonoBehaviour
 
         Bounds b = GetWorldBounds();
         Vector3 checkCenter = new Vector3(b.center.x, b.max.y + 0.15f, b.center.z);
-        Vector3 checkHalf = new Vector3(b.extents.x, 0.2f, b.extents.z);
+        Vector3 checkHalf = new Vector3(b.extents.x, 0.2f, b.extents.z + 0.5f);
+        Vector3 delta = new Vector3(deltaX, 0f, 0f);
 
+        // Track which root transforms we already moved to avoid double-moving
+        HashSet<Transform> movedRoots = new HashSet<Transform>();
+
+        // Check 3D colliders (CharacterController, Rigidbody, etc.)
         Collider[] hits = Physics.OverlapBox(checkCenter, checkHalf);
         foreach (var col in hits)
         {
             if (col.transform.IsChildOf(transform)) continue;
 
+            // CharacterController needs special handling
+            CharacterController cc = col.GetComponent<CharacterController>();
+            if (cc != null)
+            {
+                if (movedRoots.Add(cc.transform))
+                    cc.Move(delta);
+                continue;
+            }
+
             Rigidbody rb = col.attachedRigidbody;
             if (rb != null && !rb.isKinematic)
             {
-                rb.MovePosition(rb.position + new Vector3(deltaX, 0f, 0f));
+                if (movedRoots.Add(rb.transform))
+                    rb.MovePosition(rb.position + delta);
             }
             else if (rb == null)
             {
-                col.transform.position += new Vector3(deltaX, 0f, 0f);
+                if (movedRoots.Add(col.transform))
+                    col.transform.position += delta;
+            }
+        }
+
+        // Check 2D colliders (Rigidbody2D characters like PlatformerCharacter2D)
+        Collider2D[] hits2D = Physics2D.OverlapBoxAll(
+            new Vector2(checkCenter.x, checkCenter.y),
+            new Vector2(checkHalf.x * 2f, checkHalf.y * 2f),
+            0f);
+        foreach (var col2D in hits2D)
+        {
+            if (col2D.transform.IsChildOf(transform)) continue;
+
+            Rigidbody2D rb2D = col2D.attachedRigidbody;
+            if (rb2D != null)
+            {
+                if (movedRoots.Add(rb2D.transform))
+                {
+                    // Direct position set (teleport) instead of MovePosition.
+                    // MovePosition calculates an internal velocity which gets
+                    // overwritten by the character's FixedUpdate setting linearVelocity.x.
+                    rb2D.position += new Vector2(deltaX, 0f);
+                }
+            }
+            else
+            {
+                if (movedRoots.Add(col2D.transform))
+                    col2D.transform.position += delta;
             }
         }
     }
