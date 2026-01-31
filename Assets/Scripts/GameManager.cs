@@ -48,4 +48,13 @@ public class GameManager : MonoBehaviour
             default: return neutralMaterial;
         }
     }
+
+    public void TriggerGameOver()
+    {
+        // Get the index of the currently loaded scene
+        int currentIndex = SceneManager.GetActiveScene().buildIndex;
+
+        // Reload it
+        SceneManager.LoadScene(currentIndex);
+    }
 }
