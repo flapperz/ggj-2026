@@ -133,6 +133,20 @@ public class Player : MonoBehaviour
         Debug.Log("Player was hit!");
         // Add damage logic here later (e.g., health--, knockback)
     }
+
+    /// <summary>Inject move input from VR controller (bypasses PlayerInput).</summary>
+    public void SetMoveInput(Vector2 input) { moveInput = input; }
+
+    /// <summary>Trigger a jump from VR controller (bypasses PlayerInput).</summary>
+    public void TriggerJump()
+    {
+        if (jumpsRemaining > 0)
+        {
+            float jumpMultiplier = (jumpsRemaining == maxJumps) ? 1f : airJumpMultiplier;
+            playerVelocity.y = Mathf.Sqrt(jumpHeight * jumpMultiplier * -2f * (gravityValue * gravityMultiplier));
+            jumpsRemaining--;
+        }
+    }
     
     private void Respawn()
     {
