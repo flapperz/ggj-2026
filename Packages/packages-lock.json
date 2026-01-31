@@ -330,14 +330,6 @@
     },
     "com.unity.textmeshpro": {
       "version": "5.0.0",
-      "depth": 2,
-      "source": "builtin",
-      "dependencies": {
-        "com.unity.ugui": "2.0.0"
-      }
-    },
-    "com.unity.textmeshpro": {
-      "version": "5.0.0",
       "depth": 1,
       "source": "builtin",
       "dependencies": {

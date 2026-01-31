@@ -18,7 +18,7 @@ public class StageWorldMover : MonoBehaviour
     public float stageBaseY = -112.5f;
 
     [Tooltip("Level content scale factor (level units → cm).")]
-    public float levelScale = 20f;
+    public float levelScale = 1f;
 
     void LateUpdate()
     {
@@ -26,10 +26,11 @@ public class StageWorldMover : MonoBehaviour
 
         // Player localPosition is in level units, multiply by scale for cm
         float playerLocalX = playerTransform.localPosition.x;
+        float playerLocalY = playerTransform.localPosition.y;
 
         Vector3 pos = transform.localPosition;
-        pos.x = stageCenterX - playerLocalX * levelScale;
-        pos.y = stageBaseY;
+        pos.x = stageCenterX - playerLocalX;
+        pos.y = stageBaseY - playerLocalY;
         transform.localPosition = pos;
     }
 }
