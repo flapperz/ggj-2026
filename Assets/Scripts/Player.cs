@@ -1,40 +1,36 @@
 using UnityEngine;
-using UnityEngine.InputSystem; 
+using UnityEngine.InputSystem; // New Input System
 
 [RequireComponent(typeof(CharacterController))]
 public class Player : MonoBehaviour
 {
     [Header("Movement Settings")]
-    public float moveSpeed = 5.0f;
-    public float jumpHeight = 2.0f;
+    public float moveSpeed = 10.0f;
+    public float jumpHeight = 3.0f;
     public float gravityValue = -9.81f;
-    public float gravityMultiplier = 2.0f; 
+    public float gravityMultiplier = 5.0f;
 
     [Header("Jump Settings")]
-    public int maxJumps = 2; // Set to 2 for double jump, 3 for triple, etc.
-    private int jumpsPerformed = 0; // Track how many jumps we've done
+    public int maxJumps = 2;                 // 2 = double jump
+    public float airJumpMultiplier = 0.85f;  // Second jump is slightly weaker
 
-    [Header("Polarity Settings")]
     private CharacterController controller;
     private Vector3 playerVelocity;
     private Vector2 moveInput;
     private bool isGrounded;
+    private int jumpsRemaining;
     private Renderer rend;
-    
     void Start()
     {
         controller = GetComponent<CharacterController>();
         rend = GetComponent<Renderer>();
 
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.OnPolarityChanged += HandlePolarityChange;
-            HandlePolarityChange(GameManager.Instance.CurrentPolarity);
-        }
-        
-        UpdateMaterial();
+        jumpsRemaining = maxJumps;
+
+        GameManager.Instance.OnPolarityChanged += HandlePolarityChange;
+        HandlePolarityChange(GameManager.Instance.CurrentPolarity);
     }
-    
+
     private void OnDestroy()
     {
         if (GameManager.Instance != null)
@@ -53,12 +49,14 @@ public class Player : MonoBehaviour
         ApplyGravity();
         ProcessMovement();
     }
-    
+
     void UpdateMaterial()
     {
-        if (GameManager.Instance != null) 
+        if (GameManager.Instance != null)
         {
-            rend.material = GameManager.Instance.GetMaterial(GameManager.Instance.CurrentPolarity);
+            rend.material = GameManager.Instance.GetMaterial(
+                GameManager.Instance.CurrentPolarity
+            );
         }
     }
 
@@ -66,26 +64,26 @@ public class Player : MonoBehaviour
     {
         isGrounded = controller.isGrounded;
 
-        // FIX: Only reset jumps if grounded AND we are falling/stationary.
-        // This prevents resetting the count immediately after we apply upward jump force.
-        if (isGrounded && playerVelocity.y <= 0) 
+        if (isGrounded && playerVelocity.y < 0)
         {
-            jumpsPerformed = 0;
-            playerVelocity.y = -2f; // Keep the player stuck to the ground
+            playerVelocity.y = -2f;     // Stick to ground
+            jumpsRemaining = maxJumps; // Reset jumps
         }
 
-        // Apply Gravity over time
         playerVelocity.y += gravityValue * gravityMultiplier * Time.deltaTime;
     }
 
     private void ProcessMovement()
     {
+        // 2.5D movement: X axis only
         Vector3 move = new Vector3(moveInput.x, 0, 0);
         controller.Move(move * moveSpeed * Time.deltaTime);
+
+        // Vertical movement (gravity + jump)
         controller.Move(playerVelocity * Time.deltaTime);
     }
 
-    // --- Input System Events ---
+    // -------- Input System --------
 
     public void OnMove(InputValue value)
     {
@@ -96,31 +94,31 @@ public class Player : MonoBehaviour
     {
         if (!value.isPressed) return;
 
-        // Allow jump if Grounded OR we have jumps left
-        if (isGrounded || jumpsPerformed < maxJumps)
+        if (jumpsRemaining > 0)
         {
-            // Execute Jump Physics
-            playerVelocity.y = Mathf.Sqrt(jumpHeight * -2f * (gravityValue * gravityMultiplier));
-            
-            // Increment counter
-            // If we were on the ground, this becomes jump #1. 
-            // If we were in the air, this becomes jump #2 (or #3 etc).
-            jumpsPerformed++;
+            float jumpMultiplier =
+                (jumpsRemaining == maxJumps) ? 1f : airJumpMultiplier;
+
+            playerVelocity.y = Mathf.Sqrt(
+                jumpHeight * jumpMultiplier * -2f * (gravityValue * gravityMultiplier)
+            );
+
+            jumpsRemaining--;
         }
     }
 
     public void OnInteract(InputValue value)
     {
-        if (value.isPressed && GameManager.Instance != null)
+        if (!value.isPressed) return;
+
+        Polarity newPolarity = GameManager.Instance.CurrentPolarity switch
         {
-            Polarity newPolarity = GameManager.Instance.CurrentPolarity switch
-            {
-                Polarity.Neutral => Polarity.Happy,
-                Polarity.Happy => Polarity.Angry,
-                Polarity.Angry => Polarity.Neutral,
-                _ => Polarity.Neutral
-            };
-            GameManager.Instance.SetPolarity(newPolarity);
-        }
+            Polarity.Neutral => Polarity.Happy,
+            Polarity.Happy   => Polarity.Angry,
+            Polarity.Angry   => Polarity.Neutral,
+            _                => Polarity.Neutral
+        };
+
+        GameManager.Instance.SetPolarity(newPolarity);
     }
 }
