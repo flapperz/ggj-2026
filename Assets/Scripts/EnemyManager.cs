@@ -30,6 +30,7 @@ public class FlyingEnemy : MonoBehaviour
         {
             ChasePlayer();
         }
+
     }
 
     private void ChasePlayer()
@@ -71,5 +72,11 @@ public class FlyingEnemy : MonoBehaviour
             // 4. Delete self
             Destroy(gameObject);
         }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, detectionRange);
     }
 }

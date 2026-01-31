@@ -48,6 +48,12 @@ public class Player : MonoBehaviour
     {
         ApplyGravity();
         ProcessMovement();
+
+        // Check if Y position drops below -50
+        if (transform.position.y < -50f)
+        {
+            Respawn();
+        }
     }
 
     void UpdateMaterial()
@@ -126,5 +132,45 @@ public class Player : MonoBehaviour
     {
         Debug.Log("Player was hit!");
         // Add damage logic here later (e.g., health--, knockback)
+    }
+    
+    private void Respawn()
+    {
+        // 1. Find all objects with the tag "ResPoint"
+        GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("ResPoint");
+
+        Vector3 targetPosition = Vector3.zero; // Default fallback if no points exist
+
+        if (spawnPoints.Length > 0)
+        {
+            GameObject nearestPoint = null;
+            float minDistance = Mathf.Infinity;
+
+            // 2. Iterate to find the closest one
+            foreach (GameObject point in spawnPoints)
+            {
+                float distance = Vector3.Distance(transform.position, point.transform.position);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    nearestPoint = point;
+                }
+            }
+            targetPosition = nearestPoint.transform.position;
+        }
+        else
+        {
+            Debug.LogWarning("No objects tagged 'ResPoint' found! Respawning at 0,0,0.");
+        }
+
+        // 3. Move player (Disable controller briefly to force teleport)
+        controller.enabled = false; 
+        transform.position = targetPosition;
+        controller.enabled = true;
+
+        // 4. Reset velocity
+        playerVelocity = Vector3.zero; 
+        
+        Debug.Log($"Player Respawned at {targetPosition}!");
     }
 }
