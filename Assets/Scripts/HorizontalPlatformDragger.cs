@@ -283,12 +283,7 @@ public class HorizontalPlatformDragger : MonoBehaviour
             if (rb2D != null)
             {
                 if (movedRoots.Add(rb2D.transform))
-                {
-                    // Direct position set (teleport) instead of MovePosition.
-                    // MovePosition calculates an internal velocity which gets
-                    // overwritten by the character's FixedUpdate setting linearVelocity.x.
-                    rb2D.position += new Vector2(deltaX, 0f);
-                }
+                    rb2D.MovePosition(rb2D.position + new Vector2(deltaX, 0f));
             }
             else
             {
