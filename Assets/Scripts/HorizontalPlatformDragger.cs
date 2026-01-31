@@ -6,9 +6,9 @@ using UnityEngine.XR;
 /// <summary>
 /// Attach to any platform group object to make it horizontally draggable (left/right)
 /// using the right VR controller grip button.
-/// Raycasts from the right controller; if it hits this object's collider
-/// and grip is pressed, the platform moves left/right following controller movement.
-/// Desktop fallback: right-click drag.
+/// - Player standing on it rides along (won't fall through).
+/// - Respects collision with other draggable platforms.
+/// - Drag range is relative to the platform's starting position.
 /// </summary>
 public class HorizontalPlatformDragger : MonoBehaviour
 {
@@ -17,19 +17,24 @@ public class HorizontalPlatformDragger : MonoBehaviour
     public Transform vrRightHand;
 
     [Header("Drag Settings")]
-    public float minX = -20f;
-    public float maxX = 20f;
+    [Tooltip("How far left/right from the starting position the platform can travel.")]
+    public float dragRange = 5f;
     public float dragSmoothing = 15f;
     [Tooltip("Max raycast distance from controller to platform.")]
     public float maxRayDistance = 50f;
+    [Tooltip("Padding between platforms to prevent overlap.")]
+    public float collisionPadding = 0.05f;
 
     [Header("Visual Feedback")]
-    public Color blinkColor = new Color(1f, 0.6f, 0.2f, 1f); // orange
+    public Color blinkColor = new Color(1f, 0.5f, 0f, 1f); // bright orange
     [Tooltip("How fast the platform blinks when idle (cycles per second).")]
     public float blinkSpeed = 1.5f;
     [Tooltip("How much the blink color blends in (0 = subtle, 1 = full).")]
     [Range(0f, 1f)]
-    public float blinkIntensity = 0.5f;
+    public float blinkIntensity = 0.6f;
+
+    // Track all active instances for inter-platform collision
+    public static readonly List<HorizontalPlatformDragger> allInstances = new List<HorizontalPlatformDragger>();
 
     // Shared input action across all instances
     static InputAction sharedGrip;
@@ -40,13 +45,21 @@ public class HorizontalPlatformDragger : MonoBehaviour
     float dragOffsetX;
     float targetX;
     bool gripWasDown;
+    float originX;
 
-    // Cache renderers for visual feedback
+    Collider[] childColliders;
     Renderer[] renderers;
     Color[] originalColors;
 
+    void Awake()
+    {
+        originX = transform.position.x;
+        childColliders = GetComponentsInChildren<Collider>();
+    }
+
     void OnEnable()
     {
+        allInstances.Add(this);
         instanceCount++;
         if (sharedGrip == null)
         {
@@ -67,6 +80,7 @@ public class HorizontalPlatformDragger : MonoBehaviour
 
     void OnDisable()
     {
+        allInstances.Remove(this);
         instanceCount--;
         if (instanceCount <= 0 && sharedGrip != null)
         {
@@ -98,6 +112,8 @@ public class HorizontalPlatformDragger : MonoBehaviour
             }
         }
     }
+
+    // ── Visual helpers ──
 
     void CacheRenderers()
     {
@@ -141,6 +157,105 @@ public class HorizontalPlatformDragger : MonoBehaviour
                 renderers[i].material.color = Color.Lerp(originalColors[i], blinkColor, t);
         }
     }
+
+    // ── Bounds helpers ──
+
+    public Bounds GetWorldBounds()
+    {
+        if (childColliders == null || childColliders.Length == 0)
+            return new Bounds(transform.position, Vector3.one);
+
+        Bounds b = childColliders[0].bounds;
+        for (int i = 1; i < childColliders.Length; i++)
+            b.Encapsulate(childColliders[i].bounds);
+        return b;
+    }
+
+    Bounds GetBoundsAtX(float x)
+    {
+        float deltaX = x - transform.position.x;
+        Bounds b = GetWorldBounds();
+        b.center += new Vector3(deltaX, 0f, 0f);
+        return b;
+    }
+
+    // ── Collision between platforms ──
+
+    float ClampAgainstOtherPlatforms(float desiredX)
+    {
+        Bounds myBounds = GetBoundsAtX(desiredX);
+        myBounds.Expand(collisionPadding);
+
+        foreach (var other in allInstances)
+        {
+            if (other == this) continue;
+            Bounds otherBounds = other.GetWorldBounds();
+
+            if (myBounds.Intersects(otherBounds))
+            {
+                if (desiredX > transform.position.x)
+                {
+                    float maxAllowed = otherBounds.min.x - (GetWorldBounds().size.x * 0.5f) - collisionPadding;
+                    desiredX = Mathf.Min(desiredX, maxAllowed);
+                }
+                else
+                {
+                    float minAllowed = otherBounds.max.x + (GetWorldBounds().size.x * 0.5f) + collisionPadding;
+                    desiredX = Mathf.Max(desiredX, minAllowed);
+                }
+            }
+        }
+
+        // Also check VerticalPlatformDragger instances
+        foreach (var other in VerticalPlatformDragger.allInstances)
+        {
+            Bounds otherBounds = other.GetWorldBounds();
+            if (myBounds.Intersects(otherBounds))
+            {
+                if (desiredX > transform.position.x)
+                {
+                    float maxAllowed = otherBounds.min.x - (GetWorldBounds().size.x * 0.5f) - collisionPadding;
+                    desiredX = Mathf.Min(desiredX, maxAllowed);
+                }
+                else
+                {
+                    float minAllowed = otherBounds.max.x + (GetWorldBounds().size.x * 0.5f) + collisionPadding;
+                    desiredX = Mathf.Max(desiredX, minAllowed);
+                }
+            }
+        }
+
+        return desiredX;
+    }
+
+    // ── Player riding ──
+
+    void MoveWithRiders(float deltaX)
+    {
+        if (Mathf.Approximately(deltaX, 0f)) return;
+
+        Bounds b = GetWorldBounds();
+        Vector3 checkCenter = new Vector3(b.center.x, b.max.y + 0.15f, b.center.z);
+        Vector3 checkHalf = new Vector3(b.extents.x, 0.2f, b.extents.z);
+
+        Collider[] hits = Physics.OverlapBox(checkCenter, checkHalf);
+        foreach (var col in hits)
+        {
+            if (col.transform.IsChildOf(transform)) continue;
+
+            Rigidbody rb = col.attachedRigidbody;
+            if (rb != null && !rb.isKinematic)
+            {
+                rb.MovePosition(rb.position + new Vector3(deltaX, 0f, 0f));
+            }
+            else if (rb == null)
+            {
+                col.transform.position += new Vector3(deltaX, 0f, 0f);
+            }
+        }
+    }
+
+    // ── Pointing / Raycast ──
 
     bool IsPointingAtMe(out Vector3 hitPoint)
     {
@@ -188,36 +303,29 @@ public class HorizontalPlatformDragger : MonoBehaviour
             Ray ray = new Ray(vrRightHand.position, vrRightHand.forward);
             Plane plane = new Plane(Vector3.forward, transform.position);
             if (plane.Raycast(ray, out float dist))
-            {
-                Vector3 pt = ray.GetPoint(dist);
-                return pt.x;
-            }
+                return ray.GetPoint(dist).x;
             return vrRightHand.position.x;
         }
 
-        // Desktop fallback
         if (Camera.main != null && Mouse.current != null)
         {
             Vector2 mousePos = Mouse.current.position.ReadValue();
             Ray ray = Camera.main.ScreenPointToRay(new Vector3(mousePos.x, mousePos.y, 0f));
             Plane plane = new Plane(Vector3.forward, transform.position);
             if (plane.Raycast(ray, out float dist))
-            {
-                Vector3 pt = ray.GetPoint(dist);
-                return pt.x;
-            }
+                return ray.GetPoint(dist).x;
         }
         return transform.position.x;
     }
 
+    // ── Main loop ──
+
     void Update()
     {
-        // Read grip input
         float inputSystemVal = sharedGrip != null ? sharedGrip.ReadValue<float>() : 0f;
         float xrVal = ReadRightGripXR();
         float gripVal = Mathf.Max(inputSystemVal, xrVal);
 
-        // Desktop fallback: right mouse button
         bool rightMouseDown = Mouse.current != null && Mouse.current.rightButton.isPressed;
         bool rightMousePressed = Mouse.current != null && Mouse.current.rightButton.wasPressedThisFrame;
         bool rightMouseReleased = Mouse.current != null && Mouse.current.rightButton.wasReleasedThisFrame;
@@ -240,19 +348,27 @@ public class HorizontalPlatformDragger : MonoBehaviour
             }
             else
             {
-                // Continue dragging horizontally
                 float pointerX = GetPointerWorldX();
                 float desiredX = pointerX - dragOffsetX;
-                desiredX = Mathf.Clamp(desiredX, minX, maxX);
+
+                // Clamp to origin-based range
+                desiredX = Mathf.Clamp(desiredX, originX - dragRange, originX + dragRange);
+
+                // Clamp against other platforms
+                desiredX = ClampAgainstOtherPlatforms(desiredX);
 
                 targetX = Mathf.Lerp(targetX, desiredX, Time.deltaTime * dragSmoothing);
 
+                float oldX = transform.position.x;
                 Vector3 pos = transform.position;
                 pos.x = targetX;
                 transform.position = pos;
 
+                // Carry anything standing on top
+                MoveWithRiders(targetX - oldX);
+
                 SetVisualColor(blinkColor);
-                return; // skip blink while dragging
+                return;
             }
         }
         else
@@ -275,8 +391,7 @@ public class HorizontalPlatformDragger : MonoBehaviour
             }
         }
 
-        // Idle blink: pulse between original color and blinkColor
-        // Blink faster when hovered to signal "ready to grab"
+        // Idle blink
         float speed = isHovered ? blinkSpeed * 2.5f : blinkSpeed;
         float intensity = isHovered ? 1f : blinkIntensity;
         float t = (Mathf.Sin(Time.time * speed * Mathf.PI * 2f) + 1f) * 0.5f * intensity;
