@@ -14,12 +14,12 @@ public class HologramShooter : MonoBehaviour
     public Transform vrRayOrigin;
 
     [Header("Aim")]
-    [Range(0f, 90f)]
-    public float aimTiltX = 60f;
+    [Range(-90f, 90f)]
+    public float aimTiltX = 0f;
 
     [Header("Shooting")]
     public float cooldown = 0.25f;
-    public float maxRayDist = 50f;
+    public float maxRayDist = 5000f;
 
     [Header("Polarity (Right Thumbstick)")]
     public float stickDeadZone = 0.5f;
@@ -49,8 +49,8 @@ public class HologramShooter : MonoBehaviour
         GameObject laserObj = new GameObject("HologramLaser");
         laserLine = laserObj.AddComponent<LineRenderer>();
         laserLine.positionCount = 2;
-        laserLine.startWidth = 0.005f;
-        laserLine.endWidth = 0.002f;
+        laserLine.startWidth = 0.5f;
+        laserLine.endWidth = 0.2f;
         laserLine.material = MakeUnlitMaterial(new Color(1f, 0.3f, 0.1f, 1f));
         laserLine.startColor = new Color(1f, 0.3f, 0.1f, 1f);
         laserLine.endColor = new Color(1f, 0.8f, 0.2f, 1f);
@@ -61,7 +61,7 @@ public class HologramShooter : MonoBehaviour
         aimDot = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         aimDot.name = "AimDot";
         Object.Destroy(aimDot.GetComponent<Collider>());
-        aimDot.transform.localScale = Vector3.one * 0.02f;
+        aimDot.transform.localScale = Vector3.one * 2f;
         aimDot.GetComponent<Renderer>().material = MakeUnlitMaterial(new Color(1f, 0f, 0f, 1f));
         aimDot.SetActive(false);
     }
@@ -251,7 +251,7 @@ public class HologramShooter : MonoBehaviour
         GameObject fx = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         fx.name = "HitVFX";
         fx.transform.position = pos;
-        fx.transform.localScale = Vector3.one * 0.03f;
+        fx.transform.localScale = Vector3.one * 3f;
         Object.Destroy(fx.GetComponent<Collider>());
         fx.GetComponent<Renderer>().material = MakeUnlitMaterial(new Color(1f, 1f, 0.3f, 1f));
         fx.AddComponent<HologramHitVFX>();
@@ -294,7 +294,7 @@ public class HologramHitVFX : MonoBehaviour
     {
         elapsed += Time.deltaTime;
         float t = Mathf.Clamp01(elapsed / duration);
-        transform.localScale = Vector3.one * Mathf.Lerp(0.03f, 0.08f, t);
+        transform.localScale = Vector3.one * Mathf.Lerp(3f, 8f, t);
         if (rend != null)
         {
             Color c = rend.material.color;
