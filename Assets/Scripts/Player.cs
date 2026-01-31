@@ -149,7 +149,12 @@ public class Player : MonoBehaviour
             // 2. Iterate to find the closest one
             foreach (GameObject point in spawnPoints)
             {
-                float distance = Vector3.Distance(transform.position, point.transform.position);
+                
+                float distance = Mathf.Abs( point.transform.position.x - transform.position.x);
+                if (point.transform.position.x > transform.position.x)
+                {
+                    continue; // Ignore points behind the player
+                }
                 if (distance < minDistance)
                 {
                     minDistance = distance;
