@@ -30,7 +30,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 692933756102068883}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.3356647, y: -0, z: -0, w: 0.94198155}
   m_LocalPosition: {x: 0, y: 5, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
@@ -39,7 +39,7 @@ Transform:
   - {fileID: 4496524156461214413}
   - {fileID: 3909705247217803991}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 39.226, y: 0, z: 0}
 --- !u!33 &3402349855941543821
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -161,6 +161,7 @@ MonoBehaviour:
   jumpHeight: 2
   gravityValue: -9.81
   gravityMultiplier: 2
+  DeathBarrier: -50
   maxJumps: 2
   airJumpMultiplier: 0.85
 --- !u!114 &9010765839843769015
@@ -289,11 +290,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7fe843d90e2eb9c43905caebe5b9fd20, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.9996547
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7fe843d90e2eb9c43905caebe5b9fd20, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: 0.026276771
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7fe843d90e2eb9c43905caebe5b9fd20, type: 3}
       propertyPath: m_LocalRotation.y
@@ -305,7 +306,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7fe843d90e2eb9c43905caebe5b9fd20, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: 3.011
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7fe843d90e2eb9c43905caebe5b9fd20, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
