@@ -5,7 +5,6 @@ public class FlyingEnemy : MonoBehaviour
     [Header("Targeting")]
     public string playerTag = "Player";
     public float detectionRange = 10.0f;
-    public float stopDistance = 0.5f; // Lowered so it actually touches player
 
     [Header("Movement")]
     public float speed = 3.0f;
@@ -27,7 +26,7 @@ public class FlyingEnemy : MonoBehaviour
 
         float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
 
-        if (distanceToPlayer <= detectionRange && distanceToPlayer > stopDistance)
+        if (distanceToPlayer <= detectionRange)
         {
             ChasePlayer();
         }
