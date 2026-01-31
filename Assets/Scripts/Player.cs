@@ -20,7 +20,6 @@ public class Player : MonoBehaviour
     private bool isGrounded;
     private int jumpsRemaining;
     private Renderer rend;
-
     void Start()
     {
         controller = GetComponent<CharacterController>();
