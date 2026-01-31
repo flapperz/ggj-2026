@@ -19,7 +19,13 @@ public class HologramShooter : MonoBehaviour
 
     [Header("Shooting")]
     public float cooldown = 0.25f;
-    public float maxRayDist = 5000f;
+    public float maxRayDist = 250f;
+
+    [Header("Bullet")]
+    public float bulletSpeed = 150f;    // cm/s (~1.5 m/s)
+    public float bulletSize = 0.4f;     // cm
+    public float bulletLifetime = 3f;   // seconds
+    public Color bulletColor = new Color(1f, 0.6f, 0.1f, 1f);
 
     [Header("Polarity (Right Thumbstick)")]
     public float stickDeadZone = 0.5f;
@@ -49,8 +55,8 @@ public class HologramShooter : MonoBehaviour
         GameObject laserObj = new GameObject("HologramLaser");
         laserLine = laserObj.AddComponent<LineRenderer>();
         laserLine.positionCount = 2;
-        laserLine.startWidth = 0.5f;
-        laserLine.endWidth = 0.2f;
+        laserLine.startWidth = 0.05f;
+        laserLine.endWidth = 0.02f;
         laserLine.material = MakeUnlitMaterial(new Color(1f, 0.3f, 0.1f, 1f));
         laserLine.startColor = new Color(1f, 0.3f, 0.1f, 1f);
         laserLine.endColor = new Color(1f, 0.8f, 0.2f, 1f);
@@ -61,7 +67,7 @@ public class HologramShooter : MonoBehaviour
         aimDot = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         aimDot.name = "AimDot";
         Object.Destroy(aimDot.GetComponent<Collider>());
-        aimDot.transform.localScale = Vector3.one * 2f;
+        aimDot.transform.localScale = Vector3.one * 0.3f;
         aimDot.GetComponent<Renderer>().material = MakeUnlitMaterial(new Color(1f, 0f, 0f, 1f));
         aimDot.SetActive(false);
     }
@@ -106,7 +112,7 @@ public class HologramShooter : MonoBehaviour
             Vector3 origin = vrRayOrigin.position;
             Vector3 aimDir = GetAimDirection();
 
-            if (Physics.Raycast(new Ray(origin, aimDir), out RaycastHit laserHit, maxRayDist, ~0, QueryTriggerInteraction.Collide))
+            if (Physics.Raycast(new Ray(origin, aimDir), out RaycastHit laserHit, maxRayDist, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
             {
                 laserLine.enabled = true;
                 laserLine.SetPosition(0, origin);
@@ -207,22 +213,7 @@ public class HologramShooter : MonoBehaviour
 
         Vector3 origin = vrRayOrigin.position;
         Vector3 aimDir = GetAimDirection();
-        Ray ray = new Ray(origin, aimDir);
-
-        if (Physics.Raycast(ray, out RaycastHit hit, maxRayDist, ~0, QueryTriggerInteraction.Collide))
-        {
-            FlyingEnemy enemy = hit.collider.GetComponentInParent<FlyingEnemy>();
-            if (enemy != null)
-            {
-                Debug.Log($"[HologramShooter] HIT enemy: {enemy.gameObject.name}");
-                SpawnHitVFX(hit.point);
-                Destroy(enemy.gameObject);
-            }
-            else
-            {
-                Debug.Log($"[HologramShooter] Hit surface: {hit.collider.name}");
-            }
-        }
+        SpawnBullet(origin, aimDir);
     }
 
     void TryShootMouse()
@@ -233,17 +224,30 @@ public class HologramShooter : MonoBehaviour
 
         Vector2 mousePos = Mouse.current.position.ReadValue();
         Ray ray = Camera.main.ScreenPointToRay(new Vector3(mousePos.x, mousePos.y, 0f));
+        SpawnBullet(ray.origin, ray.direction);
+    }
 
-        if (Physics.Raycast(ray, out RaycastHit hit, maxRayDist, ~0, QueryTriggerInteraction.Collide))
-        {
-            FlyingEnemy enemy = hit.collider.GetComponentInParent<FlyingEnemy>();
-            if (enemy != null)
-            {
-                Debug.Log($"[HologramShooter] Mouse HIT enemy: {enemy.gameObject.name}");
-                SpawnHitVFX(hit.point);
-                Destroy(enemy.gameObject);
-            }
-        }
+    void SpawnBullet(Vector3 origin, Vector3 direction)
+    {
+        GameObject bullet = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        bullet.name = "Bullet";
+        bullet.transform.position = origin;
+        bullet.transform.localScale = Vector3.one * bulletSize;
+        bullet.transform.rotation = Quaternion.LookRotation(direction);
+        bullet.layer = LayerMask.NameToLayer("Ignore Raycast");
+
+        // Material
+        bullet.GetComponent<Renderer>().material = MakeUnlitMaterial(bulletColor);
+
+        // Physics — Rigidbody with velocity, no gravity
+        Rigidbody rb = bullet.AddComponent<Rigidbody>();
+        rb.useGravity = false;
+        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+        rb.linearVelocity = direction.normalized * bulletSpeed;
+
+        // Bullet behaviour
+        HologramBullet hb = bullet.AddComponent<HologramBullet>();
+        hb.lifetime = bulletLifetime;
     }
 
     void SpawnHitVFX(Vector3 pos)
@@ -275,6 +279,54 @@ public class HologramShooter : MonoBehaviour
             }
         }
         return new Material(Shader.Find("Sprites/Default")) { color = color };
+    }
+}
+
+public class HologramBullet : MonoBehaviour
+{
+    public float lifetime = 3f;
+
+    void Start()
+    {
+        Destroy(gameObject, lifetime);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        FlyingEnemy enemy = other.GetComponentInParent<FlyingEnemy>();
+        if (enemy != null)
+        {
+            Debug.Log($"[HologramBullet] HIT enemy: {enemy.gameObject.name}");
+            // Spawn hit VFX at contact point
+            SpawnHitVFX(transform.position);
+            Destroy(enemy.gameObject);
+            Destroy(gameObject);
+        }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        FlyingEnemy enemy = collision.collider.GetComponentInParent<FlyingEnemy>();
+        if (enemy != null)
+        {
+            Debug.Log($"[HologramBullet] HIT enemy (collision): {enemy.gameObject.name}");
+            SpawnHitVFX(transform.position);
+            Destroy(enemy.gameObject);
+        }
+        // Destroy bullet on any solid hit
+        Destroy(gameObject);
+    }
+
+    void SpawnHitVFX(Vector3 pos)
+    {
+        GameObject fx = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        fx.name = "HitVFX";
+        fx.transform.position = pos;
+        fx.transform.localScale = Vector3.one * 3f;
+        Object.Destroy(fx.GetComponent<Collider>());
+        Shader s = Shader.Find("Universal Render Pipeline/Unlit") ?? Shader.Find("Unlit/Color") ?? Shader.Find("Sprites/Default");
+        fx.GetComponent<Renderer>().material = new Material(s) { color = new Color(1f, 1f, 0.3f, 1f) };
+        fx.AddComponent<HologramHitVFX>();
     }
 }
 

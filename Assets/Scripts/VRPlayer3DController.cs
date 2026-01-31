@@ -53,7 +53,7 @@ public class VRPlayer3DController : MonoBehaviour
         runtimeThumbstick.Enable();
 
         runtimeJump = new InputAction("LeftXButton", InputActionType.Button);
-        runtimeJump.AddBinding("<XRController>{LeftHand}/primaryButton");
+        runtimeJump.AddBinding("<XRController>{RightHand}/primaryButton");
         runtimeJump.performed += OnJump;
         runtimeJump.Enable();
     }
