@@ -24,8 +24,8 @@ public class PlatformManager : MonoBehaviour
         HandlePolarityChange(GameManager.Instance.CurrentPolarity);
         
         // Debug material
-        Material targetMat = GameManager.Instance.GetMaterial(objectPolarity);
-        myRenderer.material = targetMat;
+        // Material targetMat = GameManager.Instance.GetMaterial(objectPolarity);
+        // myRenderer.material = targetMat;
     }
 
     void OnDestroy()
