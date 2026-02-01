@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
     private bool isGrounded;
     private int jumpsRemaining;
     private Renderer maskRend;
+    private Animator anim;
     void Start()
     {
         GameManager.Instance.Score = 0;
@@ -35,6 +36,7 @@ public class Player : MonoBehaviour
         }
 
         jumpsRemaining = maxJumps;
+        anim = GetComponentInChildren<Animator>();
 
         GameManager.Instance.OnPolarityChanged += HandlePolarityChange;
         HandlePolarityChange(GameManager.Instance.CurrentPolarity);
@@ -58,6 +60,7 @@ public class Player : MonoBehaviour
         GameManager.Instance.Score += Time.deltaTime * 10;
         ApplyGravity();
         ProcessMovement();
+        UpdateAnimator();
 
         Rect deathBounds = new Rect(DeathBarrier / 2, DeathBarrier / 2, DeathBarrier, DeathBarrier);
         if (transform.position.x < -DeathBarrier ||
@@ -111,6 +114,15 @@ public class Player : MonoBehaviour
 
         // Apply the movement
         controller.Move(moveDisplacement);
+    }
+
+    private void UpdateAnimator()
+    {
+        if (anim == null) return;
+        anim.SetBool("isGrounded", isGrounded);
+        int jumpCount = maxJumps - jumpsRemaining;
+        if (isGrounded) jumpCount = 0;
+        anim.SetInteger("jumpCount", jumpCount);
     }
 
     // -------- Input System --------

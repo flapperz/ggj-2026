@@ -1,0 +1,578 @@
+fileFormatVersion: 2
+guid: ff87c1db8eb2e2e49900937fbbc8b71f
+ModelImporter:
+  serializedVersion: 24200
+  internalIDToNameTable: []
+  externalObjects: {}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
+      might lower retargeting quality:\nNote: Activate translation DOF on avatar
+      to improve retargeting quality.\n\t'Tom_Rig_Hi_v001:RootPart1_M' has translation
+      animation that will be discarded.\n\t'Tom_Rig_Hi_v001:RootPart1_M' is inbetween
+      humanoid transforms and has rotation animation that will be discarded.\n\t'Tom_Rig_Hi_v001:RootPart1_M'
+      has scale animation that will be discarded.\n\t'Tom_Rig_Hi_v001:RootPart2_M'
+      has translation animation that will be discarded.\n\t'Tom_Rig_Hi_v001:RootPart2_M'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'Tom_Rig_Hi_v001:RootPart2_M'
+      has scale animation that will be discarded.\n\t'Tom_Rig_Hi_v001:Spine1_M' has
+      translation animation that will be discarded.\n\t'Tom_Rig_Hi_v001:Spine1_M'
+      has scale animation that will be discarded.\n\t'Tom_Rig_Hi_v001:Chest_M' has
+      translation animation that will be discarded.\n\t'Tom_Rig_Hi_v001:Chest_M'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'Tom_Rig_Hi_v001:Head_M'
+      has translation animation that will be discarded.\n\t'Tom_Rig_Hi_v001:Head_M'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'Tom_Rig_Hi_v001:HeadSquash1_M'
+      has scale animation that will be discarded.\n\t'Tom_Rig_Hi_v001:HeadSquash2_M'
+      has translation animation that will be discarded.\n\t'Tom_Rig_Hi_v001:HeadSquash2_M'
+      has scale animation that will be discarded.\n\t'Tom_Rig_Hi_v001:ElbowPart1_R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'Tom_Rig_Hi_v001:ElbowPart1_L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'Tom_Rig_Hi_v001:Hip_R'
+      has scale animation that will be discarded.\n\t'Tom_Rig_Hi_v001:HipPart1_R'
+      has translation animation that will be discarded.\n\t'Tom_Rig_Hi_v001:HipPart1_R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'Tom_Rig_Hi_v001:HipPart1_R'
+      has scale animation that will be discarded.\n\t'Tom_Rig_Hi_v001:Knee_R' has
+      translation animation that will be discarded.\n\t'Tom_Rig_Hi_v001:Knee_R' has
+      scale animation that will be discarded.\n\t'Tom_Rig_Hi_v001:KneePart1_R' has
+      translation animation that will be discarded.\n\t'Tom_Rig_Hi_v001:KneePart1_R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'Tom_Rig_Hi_v001:KneePart1_R'
+      has scale animation that will be discarded.\n\t'Tom_Rig_Hi_v001:Ankle_R' has
+      translation animation that will be discarded.\n\t'Tom_Rig_Hi_v001:HipPart1_L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'Tom_Rig_Hi_v001:KneePart1_L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n"
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Take 001
+      takeName: Take 001
+      internalID: 1827226128182048838
+      firstFrame: 1
+      lastFrame: 12
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    generateMeshLods: 0
+    meshLodGenerationFlags: 0
+    maximumMeshLod: -1
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human:
+    - boneName: Tom_Rig_Hi_v001:Root_M
+      humanName: Hips
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Tom_Rig_Hi_v001:Hip_L
+      humanName: LeftUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Tom_Rig_Hi_v001:Hip_R
+      humanName: RightUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Tom_Rig_Hi_v001:Knee_L
+      humanName: LeftLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Tom_Rig_Hi_v001:Knee_R
+      humanName: RightLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Tom_Rig_Hi_v001:Ankle_L
+      humanName: LeftFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Tom_Rig_Hi_v001:Ankle_R
+      humanName: RightFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Tom_Rig_Hi_v001:Spine1_M
+      humanName: Spine
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Tom_Rig_Hi_v001:Neck_M
+      humanName: Neck
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Tom_Rig_Hi_v001:HeadSquash1_M
+      humanName: Head
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Tom_Rig_Hi_v001:Shoulder_L
+      humanName: LeftShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Tom_Rig_Hi_v001:Shoulder_R
+      humanName: RightShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Tom_Rig_Hi_v001:ShoulderPart1_L
+      humanName: LeftUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Tom_Rig_Hi_v001:ShoulderPart1_R
+      humanName: RightUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Tom_Rig_Hi_v001:Elbow_L
+      humanName: LeftLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Tom_Rig_Hi_v001:Elbow_R
+      humanName: RightLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Tom_Rig_Hi_v001:Wrist_L
+      humanName: LeftHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Tom_Rig_Hi_v001:Wrist_R
+      humanName: RightHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Tom_Rig_Hi_v001:Toes_L
+      humanName: LeftToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Tom_Rig_Hi_v001:Toes_R
+      humanName: RightToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Tom_Rig_Hi_v001:HeadSquash2_M
+      humanName: RightEye
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    skeleton:
+    - name: Tom_DoubleJump_Right(Clone)
+      parentName: 
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Tom_Rig_Hi_v001:Group
+      parentName: Tom_DoubleJump_Right(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Tom_Rig_Hi_v001:DeformationSystem
+      parentName: Tom_Rig_Hi_v001:Group
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Tom_Rig_Hi_v001:Root_M
+      parentName: Tom_Rig_Hi_v001:DeformationSystem
+      position: {x: 0, y: 0.24608222, z: 0.009836275}
+      rotation: {x: 0.5, y: -0.5, z: -0.5, w: 0.5}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Tom_Rig_Hi_v001:RootPart1_M
+      parentName: Tom_Rig_Hi_v001:Root_M
+      position: {x: -0.008438942, y: 0.003757041, z: 0.000011406577}
+      rotation: {x: -0, y: -0, z: -0, w: 1}
+      scale: {x: 0.94362664, y: 0.9436267, z: 0.94362664}
+    - name: Tom_Rig_Hi_v001:RootPart2_M
+      parentName: Tom_Rig_Hi_v001:RootPart1_M
+      position: {x: -0.01027051, y: -0.0000000011247789, z: -3.9642512e-12}
+      rotation: {x: -0.000000014901161, y: 0.000000014901161, z: -0.000000014901161, w: 1}
+      scale: {x: 0.9154399, y: 0.9154401, z: 0.9154398}
+    - name: Tom_Rig_Hi_v001:Spine1_M
+      parentName: Tom_Rig_Hi_v001:RootPart2_M
+      position: {x: -0.010053491, y: -8.0560564e-10, z: -7.6687745e-12}
+      rotation: {x: -0, y: 0.000000014901161, z: -0, w: -1}
+      scale: {x: 0.94362646, y: 0.94362634, z: 0.9436264}
+    - name: Tom_Rig_Hi_v001:Chest_M
+      parentName: Tom_Rig_Hi_v001:Spine1_M
+      position: {x: -0.11377958, y: -6.620676e-10, z: -2.4287947e-11}
+      rotation: {x: 0.000000028626228, y: 0.000000014947645, z: -0.078926295, w: -0.9968805}
+      scale: {x: 1.0000001, y: 1.0000001, z: 1.0000002}
+    - name: Tom_Rig_Hi_v001:Scapula_R
+      parentName: Tom_Rig_Hi_v001:Chest_M
+      position: {x: -0.051469244, y: 0.018758856, z: -0.023799533}
+      rotation: {x: 0.06812926, y: 0.71920395, z: 0.044234008, w: -0.6900345}
+      scale: {x: 1.0000006, y: 1.0000004, z: 1.0000004}
+    - name: Tom_Rig_Hi_v001:Shoulder_R
+      parentName: Tom_Rig_Hi_v001:Scapula_R
+      position: {x: -0.07518313, y: -9.592326e-16, z: -1.563194e-15}
+      rotation: {x: 0.00082489464, y: 0.021888552, z: 0.008018474, w: 0.99972796}
+      scale: {x: 1.0000002, y: 1, z: 1}
+    - name: Tom_Rig_Hi_v001:ShoulderPart1_R
+      parentName: Tom_Rig_Hi_v001:Shoulder_R
+      position: {x: -0.03742163, y: -8.8817837e-17, z: -1.4210854e-16}
+      rotation: {x: 0.000000020838337, y: 0.0000000875443, z: 0.00000010123947, w: 1}
+      scale: {x: 1, y: 0.9999999, z: 0.99999994}
+    - name: Tom_Rig_Hi_v001:Elbow_R
+      parentName: Tom_Rig_Hi_v001:ShoulderPart1_R
+      position: {x: -0.03742163, y: -6.217249e-17, z: -2.842171e-16}
+      rotation: {x: 0.0000000040163286, y: 9.313226e-10, z: -0.05055277, w: 0.9987215}
+      scale: {x: 0.99999964, y: 1.0000001, z: 0.9999999}
+    - name: Tom_Rig_Hi_v001:ElbowPart1_R
+      parentName: Tom_Rig_Hi_v001:Elbow_R
+      position: {x: -0.03570294, y: 8.8817837e-17, z: 1.4210854e-16}
+      rotation: {x: 0.000000017383094, y: -0.00000012408728, z: 0.000000014901158, w: 1}
+      scale: {x: 1.0000005, y: 1.0000006, z: 1.0000001}
+    - name: Tom_Rig_Hi_v001:Wrist_R
+      parentName: Tom_Rig_Hi_v001:ElbowPart1_R
+      position: {x: -0.03570294, y: -3.5527136e-17, z: 1.4210854e-16}
+      rotation: {x: 0.000007509986, y: -0.000002816864, z: 0.027335435, w: 0.9996264}
+      scale: {x: 1.0000005, y: 1, z: 1.4150726}
+    - name: Tom_Rig_Hi_v001:WristEnd_R
+      parentName: Tom_Rig_Hi_v001:Wrist_R
+      position: {x: -0.14089474, y: 3.330669e-16, z: 1.6072476e-13}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Tom_Rig_Hi_v001:Scapula_L
+      parentName: Tom_Rig_Hi_v001:Chest_M
+      position: {x: -0.051469244, y: 0.018758856, z: 0.023799533}
+      rotation: {x: -0.7192039, y: 0.068129346, z: -0.6900345, w: -0.04423391}
+      scale: {x: 1.0000005, y: 1.0000002, z: 1.0000001}
+    - name: Tom_Rig_Hi_v001:Shoulder_L
+      parentName: Tom_Rig_Hi_v001:Scapula_L
+      position: {x: 0.07518313, y: 1.1723955e-15, z: 1.563194e-15}
+      rotation: {x: 0.0008249114, y: 0.021888547, z: 0.008018495, w: 0.99972796}
+      scale: {x: 1.0000004, y: 1.0000002, z: 1.0000001}
+    - name: Tom_Rig_Hi_v001:ShoulderPart1_L
+      parentName: Tom_Rig_Hi_v001:Shoulder_L
+      position: {x: 0.03742163, y: 7.105427e-17, z: 0}
+      rotation: {x: -0.000000009022187, y: 0.000000013038516, z: 0.000000085110514, w: 1}
+      scale: {x: 1.0000001, y: 1, z: 1.0000001}
+    - name: Tom_Rig_Hi_v001:Elbow_L
+      parentName: Tom_Rig_Hi_v001:ShoulderPart1_L
+      position: {x: 0.03742163, y: -7.105427e-17, z: 1.4210854e-16}
+      rotation: {x: 0.000000003608875, y: -0.0000000018626451, z: -0.050552785, w: 0.9987214}
+      scale: {x: 0.99999934, y: 0.9999995, z: 0.99999964}
+    - name: Tom_Rig_Hi_v001:ElbowPart1_L
+      parentName: Tom_Rig_Hi_v001:Elbow_L
+      position: {x: 0.03570294, y: -4.440892e-18, z: 0}
+      rotation: {x: 0.000000016616118, y: -0.000000047176332, z: -0.00000001117587, w: 1}
+      scale: {x: 1.0000002, y: 1.0000002, z: 1}
+    - name: Tom_Rig_Hi_v001:Wrist_L
+      parentName: Tom_Rig_Hi_v001:ElbowPart1_L
+      position: {x: 0.03570294, y: 1.3322676e-17, z: -1.4210854e-16}
+      rotation: {x: 0.0000075098674, y: -0.0000028030527, z: 0.02733548, w: 0.9996264}
+      scale: {x: 0.9999998, y: 1, z: 1.417119}
+    - name: Tom_Rig_Hi_v001:WristEnd_L
+      parentName: Tom_Rig_Hi_v001:Wrist_L
+      position: {x: 0.14089474, y: -3.3251178e-16, z: -1.6086687e-13}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Tom_Rig_Hi_v001:Neck_M
+      parentName: Tom_Rig_Hi_v001:Chest_M
+      position: {x: -0.073348515, y: -1.4210854e-16, z: 1.3100631e-16}
+      rotation: {x: 0.00000004393796, y: 0.00000001223522, z: -0.043849267, w: 0.99903816}
+      scale: {x: 1.0000004, y: 1.0000005, z: 1.0000002}
+    - name: Tom_Rig_Hi_v001:Head_M
+      parentName: Tom_Rig_Hi_v001:Neck_M
+      position: {x: -0.023327805, y: -0.0038252766, z: -0.000048095946}
+      rotation: {x: 0.000000074505806, y: 0.00000008940697, z: 0.99962604, w: 0.02734755}
+      scale: {x: 1.0000001, y: 1, z: 1.0000002}
+    - name: Tom_Rig_Hi_v001:HeadEnd_M
+      parentName: Tom_Rig_Hi_v001:Head_M
+      position: {x: 0.39832354, y: -0.0062349075, z: 1.2122149e-17}
+      rotation: {x: 0, y: 0, z: 0.99996734, w: 0.008083965}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Tom_Rig_Hi_v001:HeadSquash1_M
+      parentName: Tom_Rig_Hi_v001:Head_M
+      position: {x: -0.0016198935, y: 2.076117e-14, z: -1.5623059e-14}
+      rotation: {x: -0.00000007131822, y: -0.00000009196972, z: -0.9999696, w: -0.007794085}
+      scale: {x: 0.9923143, y: 0.9923143, z: 0.9923143}
+    - name: Tom_Rig_Hi_v001:HeadSquash2_M
+      parentName: Tom_Rig_Hi_v001:HeadSquash1_M
+      position: {x: -0.18459892, y: -0.0000000024288782, z: -2.6579232e-11}
+      rotation: {x: 7.1054265e-15, y: -0, z: -6.5591165e-15, w: 1}
+      scale: {x: 0.9846284, y: 0.98462826, z: 0.984628}
+    - name: Tom_Rig_Hi_v001:HeadSquash3_M
+      parentName: Tom_Rig_Hi_v001:HeadSquash2_M
+      position: {x: -0.23478444, y: -0.0000000026950586, z: 2.514821e-10}
+      rotation: {x: -0, y: -0, z: -0, w: 1}
+      scale: {x: 0.9999998, y: 0.9999998, z: 1.0000004}
+    - name: Tom_Rig_Hi_v001:Hip_R
+      parentName: Tom_Rig_Hi_v001:Root_M
+      position: {x: -0.000000011540651, y: 7.105427e-17, z: -0.06733957}
+      rotation: {x: -0.021427795, y: 0.99959385, z: -0.0014530718, w: -0.01873514}
+      scale: {x: 0.9999999, y: 1, z: 0.9999999}
+    - name: Tom_Rig_Hi_v001:HipPart1_R
+      parentName: Tom_Rig_Hi_v001:Hip_R
+      position: {x: -0.055659704, y: 0, z: 3.5527136e-17}
+      rotation: {x: -0, y: -0, z: -0, w: 1}
+      scale: {x: 1.0000002, y: 1, z: 1.0000002}
+    - name: Tom_Rig_Hi_v001:Knee_R
+      parentName: Tom_Rig_Hi_v001:HipPart1_R
+      position: {x: -0.055659704, y: 7.105427e-17, z: 3.5527136e-17}
+      rotation: {x: 0.000000029802322, y: -0.000000029802322, z: 0.03283143, w: 0.99946094}
+      scale: {x: 0.9999995, y: 0.99999994, z: 0.99999964}
+    - name: Tom_Rig_Hi_v001:KneePart1_R
+      parentName: Tom_Rig_Hi_v001:Knee_R
+      position: {x: -0.05150778, y: -7.105427e-17, z: -8.881784e-18}
+      rotation: {x: -0.000000003751688, y: 0.00000001875974, z: 0.00000010058282, w: 1}
+      scale: {x: 1.0000004, y: 1.0000002, z: 1.0000002}
+    - name: Tom_Rig_Hi_v001:Ankle_R
+      parentName: Tom_Rig_Hi_v001:KneePart1_R
+      position: {x: -0.05150778, y: -3.5527135e-16, z: -8.881784e-18}
+      rotation: {x: 0.0017979888, y: -0.018721312, z: -0.01132959, w: 0.999759}
+      scale: {x: 0.99999976, y: 0.9999997, z: 0.9999999}
+    - name: Tom_Rig_Hi_v001:Toes_R
+      parentName: Tom_Rig_Hi_v001:Ankle_R
+      position: {x: -0.024858832, y: 0.077371, z: 5.0907882e-11}
+      rotation: {x: -0.008770913, y: 0.020795137, z: -0.50999063, w: 0.8598838}
+      scale: {x: 1.000001, y: 0.9999999, z: 1.0000007}
+    - name: Tom_Rig_Hi_v001:ToesEnd_R
+      parentName: Tom_Rig_Hi_v001:Toes_R
+      position: {x: -0.100801446, y: -4.6185276e-16, z: -3.6415315e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Tom_Rig_Hi_v001:Hip_L
+      parentName: Tom_Rig_Hi_v001:Root_M
+      position: {x: -0.000000011540651, y: 7.105427e-17, z: 0.06733957}
+      rotation: {x: 0.9995938, y: 0.02142781, z: 0.018735155, w: -0.0014530569}
+      scale: {x: 1.0000001, y: 1.0000002, z: 1}
+    - name: Tom_Rig_Hi_v001:HipPart1_L
+      parentName: Tom_Rig_Hi_v001:Hip_L
+      position: {x: 0.055659704, y: 0, z: -1.7763568e-17}
+      rotation: {x: -0.000000030500814, y: 0.000000029165676, z: -0, w: 1}
+      scale: {x: 1.0000002, y: 1.0000008, z: 1.0000007}
+    - name: Tom_Rig_Hi_v001:Knee_L
+      parentName: Tom_Rig_Hi_v001:HipPart1_L
+      position: {x: 0.055659704, y: 1.4210854e-16, z: -8.8817837e-17}
+      rotation: {x: -0.00000010430813, y: 0.000000029802322, z: -0.03283143, w: -0.99946094}
+      scale: {x: 0.9999999, y: 0.9999992, z: 0.99999934}
+    - name: Tom_Rig_Hi_v001:KneePart1_L
+      parentName: Tom_Rig_Hi_v001:Knee_L
+      position: {x: 0.05150778, y: 1.5099033e-16, z: 4.440892e-18}
+      rotation: {x: -0.000000035278344, y: -0.000000023079263, z: 0.00000008940697, w: 1}
+      scale: {x: 0.9999999, y: 0.99999994, z: 1.0000001}
+    - name: Tom_Rig_Hi_v001:Ankle_L
+      parentName: Tom_Rig_Hi_v001:KneePart1_L
+      position: {x: 0.05150778, y: 1.5099033e-16, z: 2.2204459e-17}
+      rotation: {x: 0.0017980188, y: -0.018721297, z: -0.011329606, w: 0.99975896}
+      scale: {x: 1.0000001, y: 1.0000004, z: 1.0000004}
+    - name: Tom_Rig_Hi_v001:Toes_L
+      parentName: Tom_Rig_Hi_v001:Ankle_L
+      position: {x: 0.024858832, y: -0.077371, z: -4.2481678e-11}
+      rotation: {x: 0.008770979, y: -0.020795101, z: 0.5099907, w: -0.8598838}
+      scale: {x: 1, y: 1.0000001, z: 1}
+    - name: Tom_Rig_Hi_v001:ToesEnd_L
+      parentName: Tom_Rig_Hi_v001:Toes_L
+      position: {x: 0.100801446, y: 4.440892e-16, z: 3.375078e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Tom_Rig_Hi_v001:Geometry
+      parentName: Tom_Rig_Hi_v001:Group
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Tom_Rig_Hi_v001:geo
+      parentName: Tom_Rig_Hi_v001:Geometry
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Tom_Rig_Hi_v001:Tom_Body_Geo
+      parentName: Tom_Rig_Hi_v001:geo
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Tom_Rig_Hi_v001:Tom_Neck_Geo
+      parentName: Tom_Rig_Hi_v001:geo
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Tom_Rig_Hi_v001:Tom_Hair_Geo
+      parentName: Tom_Rig_Hi_v001:geo
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Tom_Rig_Hi_v001:Tom_Head_Geo
+      parentName: Tom_Rig_Hi_v001:geo
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 3
+  humanoidOversampling: 1
+  avatarSetup: 1
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
