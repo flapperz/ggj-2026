@@ -407,7 +407,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7a11325e3eb84d7fa53e7537b32e8a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EndlessSpawner
-  enemyPrefab: {fileID: 6956697096362791389, guid: 385a1320114364103bdcb7b90e04be2f, type: 3}
+  enemyPrefab: {fileID: 5874849596336981858, guid: 385a1320114364103bdcb7b90e04be2f, type: 3}
   spawnCenter: {fileID: 636473632}
   spawnRadius: 10
   baseSpawnRate: 4
