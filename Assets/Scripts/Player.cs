@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     public float jumpHeight = 3.0f;
     public float gravityValue = -9.81f;
     public float gravityMultiplier = 5.0f;
-    public float DeathBarrier = -50f;
+    public float DeathBarrier = 30f;
 
     [Header("Jump Settings")]
     public int maxJumps = 2;                 // 2 = double jump
@@ -50,7 +50,14 @@ public class Player : MonoBehaviour
         ApplyGravity();
         ProcessMovement();
 
-        // Check if Y position drops below DeathBarrier
+        Rect deathBounds = new Rect(DeathBarrier / 2, DeathBarrier / 2, DeathBarrier, DeathBarrier);
+        if (transform.position.x < -DeathBarrier ||
+            transform.position.x > DeathBarrier ||
+            transform.position.y < -DeathBarrier ||
+            transform.position.y > DeathBarrier )
+        {
+            GameManager.Instance.TriggerGameOver();
+        }
     }
 
     void UpdateMaterial()
