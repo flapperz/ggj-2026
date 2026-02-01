@@ -1,24 +1,46 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.InputSystem;
 
 public class StartSceneHandler : MonoBehaviour
 {
     private bool loading = false;
+    private InputAction triggerAction;
 
     void Start()
     {
         var interactable = GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable>();
         if (interactable != null)
             interactable.selectEntered.AddListener(OnXRSelect);
+
+        // Listen for any XR controller trigger/grip/primary button
+        triggerAction = new InputAction("AnyVRButton", InputActionType.Button);
+        triggerAction.AddBinding("<XRController>{LeftHand}/triggerPressed");
+        triggerAction.AddBinding("<XRController>{RightHand}/triggerPressed");
+        triggerAction.AddBinding("<XRController>{LeftHand}/gripPressed");
+        triggerAction.AddBinding("<XRController>{RightHand}/gripPressed");
+        triggerAction.AddBinding("<XRController>{LeftHand}/primaryButton");
+        triggerAction.AddBinding("<XRController>{RightHand}/primaryButton");
+        triggerAction.performed += _ => LoadGame();
+        triggerAction.Enable();
+    }
+
+    void OnDestroy()
+    {
+        if (triggerAction != null)
+        {
+            triggerAction.Disable();
+            triggerAction.Dispose();
+        }
     }
 
     void Update()
     {
         if (loading) return;
 
-        // Any key or mouse click or touch loads the game
-        if (Input.anyKeyDown || Input.GetMouseButtonDown(0) || Input.touchCount > 0)
+        // Fallback: any key or mouse click
+        if (Input.anyKeyDown || Input.GetMouseButtonDown(0))
         {
             LoadGame();
         }
@@ -31,7 +53,6 @@ public class StartSceneHandler : MonoBehaviour
         SceneManager.LoadScene("EnlessScene");
     }
 
-    // Called by XR interactable
     public void OnXRSelect(SelectEnterEventArgs args)
     {
         LoadGame();

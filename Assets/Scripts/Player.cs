@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
     public Renderer redmRend;
     public Renderer greenmRend;
     public GameObject greenMaskObject;
-    
+
     [Header("Movement Settings")]
     public float jumpHeight = 3.0f;
     public float gravityValue = -9.81f;
@@ -35,7 +35,9 @@ public class Player : MonoBehaviour
         if (maskTransform != null)
         {
             maskRend = maskTransform.GetComponent<Renderer>();
-        } else {
+        }
+        else
+        {
             Debug.LogError("Mask object not found on Player!");
         }
 
@@ -163,6 +165,7 @@ public class Player : MonoBehaviour
     {
         Debug.Log("Player was hit!");
         // Add damage logic here later (e.g., health--, knockback)
+        GameManager.Instance.TriggerGameOver();
     }
 
 
