@@ -54,11 +54,7 @@ public class GameManager : MonoBehaviour
 
     public void TriggerGameOver()
     {
-        Debug.Log("Game Over triggered. Reloading scene...");
-        // Get the index of the currently loaded scene
-        int currentIndex = SceneManager.GetActiveScene().buildIndex;
-
-        // Reload it
-        SceneManager.LoadScene(currentIndex);
+        Debug.Log("Game Over triggered. Loading game over scene...");
+        SceneManager.LoadScene("gameOver");
     }
 }
