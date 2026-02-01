@@ -18,12 +18,12 @@ public class HologramShooter : MonoBehaviour
     public float aimTiltX = 0f;
 
     [Header("Shooting")]
-    public float cooldown = 0.25f;
+    public float cooldown = 0.01f;
     public float maxRayDist = 3000f;
 
     [Header("Bullet")]
-    public float bulletSpeed = 300f;    // cm/s (~1.5 m/s)
-    public float bulletSize = 0.8f;     // cm
+    public float bulletSpeed = 150f;
+    public float bulletSize = 2.5f;
     public float bulletLifetime = 3f;   // seconds
     public Color bulletColor = new Color(1f, 0.6f, 0.1f, 1f);
 
@@ -201,6 +201,9 @@ public class HologramShooter : MonoBehaviour
         bullet.transform.localScale = Vector3.one * bulletSize;
         bullet.transform.rotation = Quaternion.LookRotation(direction);
         bullet.layer = LayerMask.NameToLayer("Ignore Raycast");
+
+        // Make collider a trigger for reliable trigger-trigger detection
+        bullet.GetComponent<Collider>().isTrigger = true;
 
         // Material
         bullet.GetComponent<Renderer>().material = MakeUnlitMaterial(bulletColor);
