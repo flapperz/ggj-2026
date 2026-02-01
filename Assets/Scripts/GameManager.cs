@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+    public float Score { get; set; } = 0;
 
     // 1. Changed to Property so it cannot be modified directly from outside
     public Polarity CurrentPolarity { get; private set; } = Polarity.Neutral;

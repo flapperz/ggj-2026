@@ -23,6 +23,7 @@ public class Player : MonoBehaviour
     private Renderer rend;
     void Start()
     {
+        GameManager.Instance.Score = 0;
         controller = GetComponent<CharacterController>();
         rend = GetComponent<Renderer>();
 
@@ -47,6 +48,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        GameManager.Instance.Score += Time.deltaTime * 10;
         ApplyGravity();
         ProcessMovement();
 
