@@ -59,7 +59,7 @@ public class EndlessSetup : MonoBehaviour
             }
         }
 
-        HologramShooter shooter = gameObject.AddComponent<HologramShooter>();
+    HologramShooter shooter = gameObject.AddComponent<HologramShooter>();
         StartCoroutine(WaitForRightController(shooter));
 
     }

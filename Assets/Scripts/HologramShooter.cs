@@ -19,11 +19,11 @@ public class HologramShooter : MonoBehaviour
 
     [Header("Shooting")]
     public float cooldown = 0.25f;
-    public float maxRayDist = 250f;
+    public float maxRayDist = 3000f;
 
     [Header("Bullet")]
-    public float bulletSpeed = 150f;    // cm/s (~1.5 m/s)
-    public float bulletSize = 0.4f;     // cm
+    public float bulletSpeed = 300f;    // cm/s (~1.5 m/s)
+    public float bulletSize = 0.8f;     // cm
     public float bulletLifetime = 3f;   // seconds
     public Color bulletColor = new Color(1f, 0.6f, 0.1f, 1f);
 
