@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 
     // 2. The Event (Action is a standard C# delegate that takes one parameter)
     public event Action<Polarity> OnPolarityChanged;
+    
 
     [Header("Materials")]
     public Material happyMaterial;

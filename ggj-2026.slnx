@@ -108,8 +108,8 @@
   <Project Path="Meta.Wit.Composer.Editor.csproj" />
   <Project Path="Unity.XR.AndroidOpenXR.Editor.csproj" />
   <Project Path="Oculus.Interaction.UnityXR.csproj" />
-  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Unity.Multiplayer.Center.Common.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Unity.XR.Interaction.Toolkit.Analytics.Editor.csproj" />
   <Project Path="Unity.XR.Management.Editor.csproj" />
   <Project Path="Meta.XR.Editor.Notifications.csproj" />

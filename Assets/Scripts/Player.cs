@@ -5,7 +5,6 @@ using UnityEngine.InputSystem; // New Input System
 public class Player : MonoBehaviour
 {
     [Header("Movement Settings")]
-    public float moveSpeed = 10.0f;
     public float jumpHeight = 3.0f;
     public float gravityValue = -9.81f;
     public float gravityMultiplier = 5.0f;
@@ -14,10 +13,11 @@ public class Player : MonoBehaviour
     [Header("Jump Settings")]
     public int maxJumps = 2;                 // 2 = double jump
     public float airJumpMultiplier = 0.85f;  // Second jump is slightly weaker
+    private float centeringVelocity; // State variable for SmoothDamp
+    public float centeringSmoothTime = 1f; // Adjust for "snappiness"
 
     private CharacterController controller;
     private Vector3 playerVelocity;
-    private Vector2 moveInput;
     private bool isGrounded;
     private int jumpsRemaining;
     private Renderer rend;
@@ -79,19 +79,26 @@ public class Player : MonoBehaviour
     private void ProcessMovement()
     {
         // 2.5D movement: X axis only
-        Vector3 move = new Vector3(moveInput.x, 0, 0);
-        controller.Move(move * moveSpeed * Time.deltaTime);
+        // // 1. Re-centering Logic (Target X = 0)
+        float currentX = transform.position.x;
 
-        // Vertical movement (gravity + jump)
-        controller.Move(playerVelocity * Time.deltaTime);
+        // We calculate a new X position that is closer to 0 using SmoothDamp
+        float nextX = Mathf.SmoothDamp(currentX, 0f, ref centeringVelocity, centeringSmoothTime);
+
+        // Convert that position change into a displacement (Move delta)
+        float centeringDelta = nextX - currentX;
+
+
+        // 2. Combine with Gravity/Jump
+        // We create a move vector: [Centering Displacement] [Gravity/Jump Displacement]
+        Vector3 moveDisplacement = new Vector3(centeringDelta, playerVelocity.y * Time.deltaTime, 0f);
+
+        // Apply the movement
+        controller.Move(moveDisplacement);
     }
 
     // -------- Input System --------
 
-    public void OnMove(InputValue value)
-    {
-        moveInput = value.Get<Vector2>();
-    }
 
     // public void OnJump(InputValue value)
     // {
@@ -123,8 +130,6 @@ public class Player : MonoBehaviour
         // Add damage logic here later (e.g., health--, knockback)
     }
 
-    /// <summary>Inject move input from VR controller (bypasses PlayerInput).</summary>
-    public void SetMoveInput(Vector2 input) { moveInput = input; }
 
     /// <summary>Trigger a jump from VR controller (bypasses PlayerInput).</summary>
     public void TriggerJump()
