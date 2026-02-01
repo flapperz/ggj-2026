@@ -28,6 +28,8 @@ public class EndlessSetup : MonoBehaviour
     [Tooltip("Y offset to align level ground with stage floor.")]
     public float stageBaseY = -112.5f;
 
+    // Runtime references
+    Transform worldMover;
     Player playerRef;
 
     void Start()
@@ -56,6 +58,9 @@ public class EndlessSetup : MonoBehaviour
                 Debug.Log("[HologramSetup] Created StageRoot at default position (0, 150, 300)");
             }
         }
+
+        HologramShooter shooter = gameObject.AddComponent<HologramShooter>();
+        StartCoroutine(WaitForRightController(shooter));
 
     }
 
