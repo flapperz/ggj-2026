@@ -411,7 +411,7 @@ MonoBehaviour:
   spawnCenter: {fileID: 636473632}
   spawnRadius: 10
   baseSpawnRate: 4
-  minSpawnRate: 0.2
+  minSpawnRate: 0.5
   difficultyScaling: 0.005
 --- !u!4 &636473632
 Transform:
