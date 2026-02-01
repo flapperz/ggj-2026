@@ -4,6 +4,10 @@ using UnityEngine.InputSystem; // New Input System
 [RequireComponent(typeof(CharacterController))]
 public class Player : MonoBehaviour
 {
+    public Renderer redmRend;
+    public Renderer greenmRend;
+    public GameObject greenMaskObject;
+    
     [Header("Movement Settings")]
     public float jumpHeight = 3.0f;
     public float gravityValue = -9.81f;
@@ -76,9 +80,12 @@ public class Player : MonoBehaviour
     {
         if (GameManager.Instance != null)
         {
-            maskRend.material = GameManager.Instance.GetMaterial(
-                GameManager.Instance.CurrentPolarity
-            );
+            Polarity p = GameManager.Instance.CurrentPolarity;
+            if (redmRend != null && greenmRend != null)
+            {
+                redmRend.enabled = (p == Polarity.Angry);
+                greenmRend.enabled = (p == Polarity.Happy);
+            }
         }
     }
 
