@@ -1,15 +1,18 @@
 using UnityEngine;
 using System; // Required for 'Action'
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+    public float Score { get; set; } = 0;
 
     // 1. Changed to Property so it cannot be modified directly from outside
     public Polarity CurrentPolarity { get; private set; } = Polarity.Neutral;
 
     // 2. The Event (Action is a standard C# delegate that takes one parameter)
     public event Action<Polarity> OnPolarityChanged;
+    
 
     [Header("Materials")]
     public Material happyMaterial;
@@ -47,5 +50,15 @@ public class GameManager : MonoBehaviour
             case Polarity.Angry: return angryMaterial;
             default: return neutralMaterial;
         }
+    }
+
+    public void TriggerGameOver()
+    {
+        Debug.Log("Game Over triggered. Reloading scene...");
+        // Get the index of the currently loaded scene
+        int currentIndex = SceneManager.GetActiveScene().buildIndex;
+
+        // Reload it
+        SceneManager.LoadScene(currentIndex);
     }
 }

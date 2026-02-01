@@ -5,26 +5,34 @@ using UnityEngine.InputSystem; // New Input System
 public class Player : MonoBehaviour
 {
     [Header("Movement Settings")]
-    public float moveSpeed = 10.0f;
     public float jumpHeight = 3.0f;
     public float gravityValue = -9.81f;
     public float gravityMultiplier = 5.0f;
-    public float DeathBarrier = -50f;
+    public float DeathBarrier = 30f;
 
     [Header("Jump Settings")]
     public int maxJumps = 2;                 // 2 = double jump
     public float airJumpMultiplier = 0.85f;  // Second jump is slightly weaker
+    private float centeringVelocity; // State variable for SmoothDamp
+    public float centeringSmoothTime = 1f; // Adjust for "snappiness"
 
     private CharacterController controller;
     private Vector3 playerVelocity;
-    private Vector2 moveInput;
     private bool isGrounded;
     private int jumpsRemaining;
-    private Renderer rend;
+    private Renderer maskRend;
     void Start()
     {
+        GameManager.Instance.Score = 0;
         controller = GetComponent<CharacterController>();
-        rend = GetComponent<Renderer>();
+        Transform maskTransform = transform.Find("Mask");
+
+        if (maskTransform != null)
+        {
+            maskRend = maskTransform.GetComponent<Renderer>();
+        } else {
+            Debug.LogError("Mask object not found on Player!");
+        }
 
         jumpsRemaining = maxJumps;
 
@@ -47,13 +55,17 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        GameManager.Instance.Score += Time.deltaTime * 10;
         ApplyGravity();
         ProcessMovement();
 
-        // Check if Y position drops below DeathBarrier
-        if (transform.position.y < DeathBarrier)
+        Rect deathBounds = new Rect(DeathBarrier / 2, DeathBarrier / 2, DeathBarrier, DeathBarrier);
+        if (transform.position.x < -DeathBarrier ||
+            transform.position.x > DeathBarrier ||
+            transform.position.y < -DeathBarrier ||
+            transform.position.y > DeathBarrier)
         {
-            Respawn();
+            GameManager.Instance.TriggerGameOver();
         }
     }
 
@@ -61,7 +73,7 @@ public class Player : MonoBehaviour
     {
         if (GameManager.Instance != null)
         {
-            rend.material = GameManager.Instance.GetMaterial(
+            maskRend.material = GameManager.Instance.GetMaterial(
                 GameManager.Instance.CurrentPolarity
             );
         }
@@ -83,50 +95,49 @@ public class Player : MonoBehaviour
     private void ProcessMovement()
     {
         // 2.5D movement: X axis only
-        Vector3 move = new Vector3(moveInput.x, 0, 0);
-        controller.Move(move * moveSpeed * Time.deltaTime);
+        // // 1. Re-centering Logic (Target X = 0)
+        float currentX = transform.position.x;
 
-        // Vertical movement (gravity + jump)
-        controller.Move(playerVelocity * Time.deltaTime);
+        // We calculate a new X position that is closer to 0 using SmoothDamp
+        float nextX = Mathf.SmoothDamp(currentX, 0f, ref centeringVelocity, centeringSmoothTime);
+
+        // Convert that position change into a displacement (Move delta)
+        float centeringDelta = nextX - currentX;
+
+
+        // 2. Combine with Gravity/Jump
+        // We create a move vector: [Centering Displacement] [Gravity/Jump Displacement]
+        Vector3 moveDisplacement = new Vector3(centeringDelta, playerVelocity.y * Time.deltaTime, 0f);
+
+        // Apply the movement
+        controller.Move(moveDisplacement);
     }
 
     // -------- Input System --------
 
-    public void OnMove(InputValue value)
+
+    // public void OnJump(InputValue value)
+    // {
+    //     if (!value.isPressed) return;
+
+    //     if (jumpsRemaining > 0)
+    //     {
+    //         float jumpMultiplier =
+    //             (jumpsRemaining == maxJumps) ? 1f : airJumpMultiplier;
+
+    //         playerVelocity.y = Mathf.Sqrt(
+    //             jumpHeight * jumpMultiplier * -2f * (gravityValue * gravityMultiplier)
+    //         );
+
+    //         jumpsRemaining--;
+    //     }
+    // }
+
+    public void TriggerMaskChange(Polarity targetPolarity)
     {
-        moveInput = value.Get<Vector2>();
-    }
-
-    public void OnJump(InputValue value)
-    {
-        if (!value.isPressed) return;
-
-        if (jumpsRemaining > 0)
-        {
-            float jumpMultiplier =
-                (jumpsRemaining == maxJumps) ? 1f : airJumpMultiplier;
-
-            playerVelocity.y = Mathf.Sqrt(
-                jumpHeight * jumpMultiplier * -2f * (gravityValue * gravityMultiplier)
-            );
-
-            jumpsRemaining--;
-        }
-    }
-
-    public void OnInteract(InputValue value)
-    {
-        if (!value.isPressed) return;
-
-        Polarity newPolarity = GameManager.Instance.CurrentPolarity switch
-        {
-            Polarity.Neutral => Polarity.Happy,
-            Polarity.Happy => Polarity.Angry,
-            Polarity.Angry => Polarity.Neutral,
-            _ => Polarity.Neutral
-        };
-
-        GameManager.Instance.SetPolarity(newPolarity);
+        // Simply set the polarity based on the input provided by the controller
+        GameManager.Instance.SetPolarity(targetPolarity);
+        Debug.Log($"[MaskChange] Switched to {targetPolarity}");
     }
 
     public void OnHit()
@@ -135,8 +146,6 @@ public class Player : MonoBehaviour
         // Add damage logic here later (e.g., health--, knockback)
     }
 
-    /// <summary>Inject move input from VR controller (bypasses PlayerInput).</summary>
-    public void SetMoveInput(Vector2 input) { moveInput = input; }
 
     /// <summary>Trigger a jump from VR controller (bypasses PlayerInput).</summary>
     public void TriggerJump()
@@ -149,48 +158,4 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void Respawn()
-    {
-        // 1. Find all objects with the tag "ResPoint"
-        GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("ResPoint");
-
-        Vector3 targetPosition = Vector3.zero; // Default fallback if no points exist
-
-        if (spawnPoints.Length > 0)
-        {
-            GameObject nearestPoint = null;
-            float minDistance = Mathf.Infinity;
-
-            // 2. Iterate to find the closest one
-            foreach (GameObject point in spawnPoints)
-            {
-
-                float distance = Mathf.Abs(point.transform.position.x - transform.position.x);
-                if (point.transform.position.x > transform.position.x)
-                {
-                    continue; // Ignore points behind the player
-                }
-                if (distance < minDistance)
-                {
-                    minDistance = distance;
-                    nearestPoint = point;
-                }
-            }
-            targetPosition = nearestPoint.transform.position;
-        }
-        else
-        {
-            Debug.LogWarning("No objects tagged 'ResPoint' found! Respawning at 0,0,0.");
-        }
-
-        // 3. Move player (Disable controller briefly to force teleport)
-        controller.enabled = false;
-        transform.position = targetPosition;
-        controller.enabled = true;
-
-        // 4. Reset velocity
-        playerVelocity = Vector3.zero;
-
-        Debug.Log($"Player Respawned at {targetPosition}!");
-    }
 }

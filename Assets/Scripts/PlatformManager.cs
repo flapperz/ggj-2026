@@ -51,19 +51,29 @@ public class PlatformManager : MonoBehaviour
         myCollider.enabled = shouldEnable;
 
         // Optional: Visual feedback (make it semi-transparent or change color)
-        // UpdateVisuals(shouldEnable);
+        UpdateVisuals(!shouldEnable);
     }
 
-    // private void UpdateVisuals(bool isSolid)
-    // {
-    //     if (myRenderer == null) return;
+    private void UpdateVisuals(bool isSolid)
+    {
+    if (myRenderer == null) return;
 
-    //     // Example: Change opacity or switch material based on state
-    //     // This uses the material from the GameManager to match the look
-    //     Material targetMat = GameManager.Instance.GetMaterial(objectPolarity);
-    //     myRenderer.material = targetMat;
+        // 1. Get the base material from the GameManager
+        Material targetMat = GameManager.Instance.GetMaterial(objectPolarity);
 
-    //     // If it's not solid (disabled), maybe make it look "ghostly" or disable renderer
-    //     // myRenderer.enabled = isSolid; 
-    // }
+        // 2. Assign the material to the renderer
+        // Note: Accessing .material creates a unique instance clone so we don't mess up other objects
+        myRenderer.material = targetMat;
+
+        // 3. Get the current color of that material
+        Color newColor = myRenderer.material.color;
+
+        // 4. Set Alpha based on your rule:
+        // isSolid (true) -> 0.5f (Semi-transparent)
+        // isSolid (false) -> 1.0f (Fully Opaque)
+        newColor.a = isSolid ? 0.5f : 1.0f;
+
+        // 5. Apply the modified color back
+        myRenderer.material.color = newColor;
+    }
 }

@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2155335042155406582}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -152,5 +152,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
   playerTag: Player
-  detectionRange: 10
-  speed: 3
+  speed: 2.5
+  dashSpeed: 25
+  lockRadius: 10
+  pauseDuration: 0.5
