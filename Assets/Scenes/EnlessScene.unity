@@ -6313,6 +6313,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a554f50d3bf3547cebadb5fa5cd70d85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EndlessGenerator
+  startingPrefab: {fileID: 6389323836222763009, guid: bde5cf1a5d6861f428a7af6adedff9d4, type: 3}
   templates:
   - {fileID: 8902928791710837762, guid: 3a42358957a7f415a8e8fce042769b99, type: 3}
   - {fileID: 6389323836222763009, guid: 93be84a8a472646c8a055814847f1487, type: 3}
