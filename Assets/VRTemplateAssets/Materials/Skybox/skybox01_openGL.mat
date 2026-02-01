@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: skybox01_openGL
-  m_Shader: {fileID: 103, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: dbcb3d408f96ef44b9b65c474ba3e769, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -29,9 +29,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _DitherStrength: 12.06
     - _Exposure: 1
     - _Rotation: 132.3
     m_Colors:
-    - _Tint: {r: 0.735849, g: 0.735849, b: 0.735849, a: 0.5}
+    - _BottomColor: {r: 1, g: 0.3330518, b: 0, a: 1}
+    - _Direction: {r: 0, g: 1, b: 0, a: 1}
+    - _MiddleColor: {r: 0.23584908, g: 0.08423181, b: 0, a: 1}
+    - _Tint: {r: 0.6320754, g: 0.18229936, b: 0, a: 0.5}
+    - _TopColor: {r: 0.1509434, g: 0.1230976, b: 0.11178356, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
