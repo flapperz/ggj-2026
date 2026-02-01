@@ -6320,6 +6320,8 @@ MonoBehaviour:
   - {fileID: 6389323836222763009, guid: 3bb9d839d06f9457c94d22c665020a25, type: 3}
   - {fileID: 6389323836222763009, guid: 864c99568d3db42bcac2ee69195f1873, type: 3}
   - {fileID: 6389323836222763009, guid: 078497e52fa094bc4904619fe2635967, type: 3}
+  - {fileID: 6389323836222763009, guid: bde5cf1a5d6861f428a7af6adedff9d4, type: 3}
+  - {fileID: 6389323836222763009, guid: bde5cf1a5d6861f428a7af6adedff9d4, type: 3}
   scrollSpeed: 10
   templateWidth: 50
   initialSpawnCount: 3
