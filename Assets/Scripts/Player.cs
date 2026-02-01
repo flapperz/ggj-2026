@@ -20,12 +20,19 @@ public class Player : MonoBehaviour
     private Vector3 playerVelocity;
     private bool isGrounded;
     private int jumpsRemaining;
-    private Renderer rend;
+    private Renderer maskRend;
     void Start()
     {
         GameManager.Instance.Score = 0;
         controller = GetComponent<CharacterController>();
-        rend = GetComponent<Renderer>();
+        Transform maskTransform = transform.Find("Mask");
+
+        if (maskTransform != null)
+        {
+            maskRend = maskTransform.GetComponent<Renderer>();
+        } else {
+            Debug.LogError("Mask object not found on Player!");
+        }
 
         jumpsRemaining = maxJumps;
 
@@ -56,7 +63,7 @@ public class Player : MonoBehaviour
         if (transform.position.x < -DeathBarrier ||
             transform.position.x > DeathBarrier ||
             transform.position.y < -DeathBarrier ||
-            transform.position.y > DeathBarrier )
+            transform.position.y > DeathBarrier)
         {
             GameManager.Instance.TriggerGameOver();
         }
@@ -66,7 +73,7 @@ public class Player : MonoBehaviour
     {
         if (GameManager.Instance != null)
         {
-            rend.material = GameManager.Instance.GetMaterial(
+            maskRend.material = GameManager.Instance.GetMaterial(
                 GameManager.Instance.CurrentPolarity
             );
         }
