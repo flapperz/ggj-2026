@@ -96,6 +96,12 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.unity.2d.sprite": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
     "com.unity.ai.navigation": {
       "version": "2.0.9",
       "depth": 2,
@@ -104,22 +110,6 @@
         "com.unity.modules.ai": "1.0.0"
       },
       "url": "https://packages.unity.com"
-    },
-    "com.simonoliver.unityfigma": {
-      "version": "https://github.com/simonoliver/UnityFigmaBridge.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {
-        "com.unity.nuget.newtonsoft-json": "2.0.1-preview.1",
-        "com.unity.textmeshpro": "2.0.1"
-      },
-      "hash": "0e2fd2f8114209ddc0fd6af3676d3da0bebf2021"
-    },
-    "com.unity.2d.sprite": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {}
     },
     "com.unity.burst": {
       "version": "1.8.27",
@@ -330,7 +320,7 @@
     },
     "com.unity.textmeshpro": {
       "version": "5.0.0",
-      "depth": 1,
+      "depth": 2,
       "source": "builtin",
       "dependencies": {
         "com.unity.ugui": "2.0.0"
@@ -459,13 +449,6 @@
         "com.unity.xr.legacyinputhelpers": "2.1.2"
       },
       "url": "https://packages.unity.com"
-    },
-    "com.volorf.figma-ui-image": {
-      "version": "https://github.com/Volorf/figma-ui-image.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "2600951c2e99b8f4060e2e05429e922a087ca1e3"
     },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",
